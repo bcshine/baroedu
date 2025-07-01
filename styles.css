@@ -540,9 +540,44 @@ body {
         right: 1rem;
     }
     
+    /* 모바일에서 강좌카드 2개씩 배치 */
     .courses-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    /* 모바일 강좌카드 최적화 */
+    .course-card {
+        padding: 1rem;
+    }
+    
+    .course-content h3 {
+        font-size: 1rem;
+        line-height: 1.3;
+        margin-bottom: 0.5rem;
+    }
+    
+    .course-subtitle {
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .course-description {
+        font-size: 0.75rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .instructor-info {
+        margin-bottom: 0.8rem;
+    }
+    
+    .instructor-info span {
+        font-size: 0.75rem;
+    }
+    
+    .btn-more {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
     }
     
     .reviews-grid {
@@ -581,8 +616,33 @@ body {
         font-size: 1.3rem;
     }
     
+    /* 작은 모바일에서도 2개씩 배치 유지 */
     .courses-grid {
-        gap: 1rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+    }
+    
+    /* 더 작은 화면에서 카드 최적화 */
+    .course-card {
+        padding: 0.8rem;
+    }
+    
+    .course-content h3 {
+        font-size: 0.9rem;
+        line-height: 1.2;
+    }
+    
+    .course-subtitle {
+        font-size: 0.75rem;
+    }
+    
+    .course-description {
+        font-size: 0.7rem;
+    }
+    
+    .btn-more {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem;
     }
     
     .courses, .reviews, .brand-info {
