@@ -1,0 +1,416 @@
+/* 강좌 목록 페이지 전용 스타일 */
+
+/* 페이지 헤더 */
+.page-header {
+    background: linear-gradient(135deg, #2c5aa0 0%, #1e3d6f 100%);
+    color: white;
+    padding: 8rem 0 4rem;
+    text-align: center;
+}
+
+.page-header h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.page-header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* 필터 섹션 */
+.course-filters {
+    background: #f8f9fa;
+    padding: 2rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.filter-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+.category-filters h3 {
+    margin-bottom: 1rem;
+    color: #2c5aa0;
+    font-weight: 600;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 0.5rem 1rem;
+    border: 2px solid #ddd;
+    background: white;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+}
+
+.filter-btn:hover {
+    border-color: #2c5aa0;
+    color: #2c5aa0;
+}
+
+.filter-btn.active {
+    background: #2c5aa0;
+    color: white;
+    border-color: #2c5aa0;
+}
+
+.sort-section {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sort-select {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: white;
+    cursor: pointer;
+}
+
+/* 강좌 목록 */
+.courses-list {
+    padding: 3rem 0;
+}
+
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.course-item {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.course-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.course-thumbnail {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.course-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.course-level,
+.course-duration {
+    position: absolute;
+    top: 10px;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.course-level {
+    left: 10px;
+    background: rgba(44, 90, 160, 0.9);
+    color: white;
+}
+
+.course-duration {
+    right: 10px;
+    background: rgba(255, 107, 53, 0.9);
+    color: white;
+}
+
+.course-info {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.course-category {
+    display: inline-block;
+    background: #e3f2fd;
+    color: #2c5aa0;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+}
+
+.course-title a {
+    color: #333;
+    text-decoration: none;
+    font-size: 1.3rem;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s;
+    height: 2.6em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.course-title a:hover {
+    color: #2c5aa0;
+}
+
+.course-subtitle {
+    color: #666;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+    height: 3em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.instructor-info {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.instructor-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.instructor-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.course-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.stars {
+    color: #ffd700;
+    font-size: 0.9rem;
+}
+
+.rating-score {
+    font-weight: 600;
+    color: #333;
+}
+
+.review-count {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.students-count {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.course-price {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    margin-top: auto;
+}
+
+.original-price {
+    color: #999;
+    text-decoration: line-through;
+    font-size: 0.9rem;
+}
+
+.current-price {
+    color: #2c5aa0;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.discount {
+    background: #ff6b35;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* 페이지네이션 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 3rem;
+}
+
+.pagination-btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background: #2c5aa0;
+    color: white;
+    border-color: #2c5aa0;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-numbers {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.pagination-number {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination-number.active {
+    background: #2c5aa0;
+    color: white;
+    border-color: #2c5aa0;
+}
+
+.pagination-number:hover:not(.active) {
+    background: #f8f9fa;
+    border-color: #2c5aa0;
+}
+
+.pagination-dots {
+    color: #666;
+    margin: 0 0.5rem;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+    .courses-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        padding: 6rem 0 3rem;
+    }
+    
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    
+    .filter-section {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .courses-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .courses-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .course-stats {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .filter-buttons {
+        justify-content: center;
+    }
+    
+    .pagination-numbers {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .courses-list {
+        padding: 2rem 0;
+    }
+    
+    .course-info {
+        padding: 1rem;
+    }
+    
+    .course-title a {
+        font-size: 1.1rem;
+    }
+    
+    .pagination {
+        flex-wrap: wrap;
+        gap: 0.3rem;
+    }
+    
+    .pagination-btn,
+    .pagination-number {
+        width: 35px;
+        height: 35px;
+    }
+} 

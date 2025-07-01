@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강좌 목록 - 바로교육</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="courses.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="images/logo.png" alt="바로교육 로고">
+                        <span class="brand-name">바로교육</span>
+                    </a>
+                </div>
+                <nav class="nav">
+                    <ul class="nav-menu">
+                        <li><a href="courses.html" class="active">강의</a></li>
+                        <li><a href="index.html#reviews">후기</a></li>
+                        <li><a href="#myclass">나의강의실</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="btn-login">로그인</button>
+                    <button class="btn-signup">회원가입</button>
+                </div>
+                <div class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 페이지 헤더 -->
+    <section class="page-header">
+        <div class="container">
+            <h1>전체 강좌</h1>
+            <p>바로 배워서, 바로 써먹는 실무 중심 강좌들을 만나보세요</p>
+        </div>
+    </section>
+
+    <!-- 필터 및 정렬 -->
+    <section class="course-filters">
+        <div class="container">
+            <div class="filter-section">
+                <div class="category-filters">
+                    <h3>카테고리</h3>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-category="all">전체</button>
+                        <button class="filter-btn" data-category="marketing">마케팅</button>
+                        <button class="filter-btn" data-category="branding">브랜딩</button>
+                        <button class="filter-btn" data-category="web">웹개발</button>
+                        <button class="filter-btn" data-category="finance">재테크</button>
+                        <button class="filter-btn" data-category="realestate">부동산</button>
+                        <button class="filter-btn" data-category="startup">창업</button>
+                        <button class="filter-btn" data-category="etc">기타</button>
+                    </div>
+                </div>
+                
+                <div class="sort-section">
+                    <label for="sort-select">정렬</label>
+                    <select id="sort-select" class="sort-select">
+                        <option value="latest">최신순</option>
+                        <option value="popular">인기순</option>
+                        <option value="price-low">가격 낮은순</option>
+                        <option value="price-high">가격 높은순</option>
+                        <option value="rating">평점순</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 강좌 목록 -->
+    <section class="courses-list">
+        <div class="container">
+            <div class="courses-grid" id="courses-grid">
+                <!-- 강좌 카드 1 -->
+                <div class="course-item" data-category="marketing">
+                    <div class="course-thumbnail">
+                        <img src="images/pd1.jpg" alt="AI 상세페이지 강좌">
+                        <div class="course-level">초급</div>
+                        <div class="course-duration">2주</div>
+                    </div>
+                    <div class="course-info">
+                        <div class="course-category">마케팅</div>
+                        <h3 class="course-title">
+                            <a href="course-detail.html?id=1">AI 상세페이지 최적화</a>
+                        </h3>
+                        <p class="course-subtitle">AI 인공지능 추천에 최적화된 상세페이지</p>
+                        <div class="instructor-info">
+                            <img src="images/man2.jpg" alt="강사" class="instructor-avatar">
+                            <span class="instructor-name">김마케팅</span>
+                        </div>
+                        <div class="course-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-score">4.8</span>
+                                <span class="review-count">(127)</span>
+                            </div>
+                            <div class="students-count">834명 수강</div>
+                        </div>
+                        <div class="course-price">
+                            <span class="original-price">100만원</span>
+                            <span class="current-price">50만원</span>
+                            <span class="discount">50% 할인</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 강좌 카드 2 -->
+                <div class="course-item" data-category="sns">
+                    <div class="course-thumbnail">
+                        <img src="images/pd2.jpg" alt="AI 쇼츠 릴스 강좌">
+                        <div class="course-level">중급</div>
+                        <div class="course-duration">2주</div>
+                    </div>
+                    <div class="course-info">
+                        <div class="course-category">SNS</div>
+                        <h3 class="course-title">
+                            <a href="course-detail.html?id=2">AI 쇼츠, 릴스 마스터</a>
+                        </h3>
+                        <p class="course-subtitle">30~60초 바이럴 콘텐츠 제작법</p>
+                        <div class="instructor-info">
+                            <img src="images/instructor-new.jpg" alt="강사" class="instructor-avatar">
+                            <span class="instructor-name">이콘텐츠</span>
+                        </div>
+                        <div class="course-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-score">4.9</span>
+                                <span class="review-count">(203)</span>
+                            </div>
+                            <div class="students-count">1,245명 수강</div>
+                        </div>
+                        <div class="course-price">
+                            <span class="original-price">80만원</span>
+                            <span class="current-price">40만원</span>
+                            <span class="discount">50% 할인</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 강좌 카드 3 -->
+                <div class="course-item" data-category="web">
+                    <div class="course-thumbnail">
+                        <img src="images/pd3.jpg" alt="웹페이지 랜딩페이지 강좌">
+                        <div class="course-level">고급</div>
+                        <div class="course-duration">3개월</div>
+                    </div>
+                    <div class="course-info">
+                        <div class="course-category">웹개발</div>
+                        <h3 class="course-title">
+                            <a href="course-detail.html?id=3">AI 최적화 웹페이지 제작</a>
+                        </h3>
+                        <p class="course-subtitle">기획부터 배포까지 원스톱 웹사이트 구축</p>
+                        <div class="instructor-info">
+                            <img src="images/man2.jpg" alt="강사" class="instructor-avatar">
+                            <span class="instructor-name">박웹개발</span>
+                        </div>
+                        <div class="course-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★☆</span>
+                                <span class="rating-score">4.7</span>
+                                <span class="review-count">(89)</span>
+                            </div>
+                            <div class="students-count">567명 수강</div>
+                        </div>
+                        <div class="course-price">
+                            <span class="original-price">120만원</span>
+                            <span class="current-price">60만원</span>
+                            <span class="discount">50% 할인</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 강좌 카드 4 -->
+                <div class="course-item" data-category="branding">
+                    <div class="course-thumbnail">
+                        <img src="images/instructor-new.jpg" alt="브랜드 네이밍 강좌">
+                        <div class="course-level">고급</div>
+                        <div class="course-duration">1개월</div>
+                    </div>
+                    <div class="course-info">
+                        <div class="course-category">브랜딩</div>
+                        <h3 class="course-title">
+                            <a href="course-detail.html?id=4">브랜드 네이밍 패키지</a>
+                        </h3>
+                        <p class="course-subtitle">현존 최고수준의 브랜드 네임 개발</p>
+                        <div class="instructor-info">
+                            <img src="images/instructor-new.jpg" alt="강사" class="instructor-avatar">
+                            <span class="instructor-name">최브랜딩</span>
+                        </div>
+                        <div class="course-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-score">5.0</span>
+                                <span class="review-count">(45)</span>
+                            </div>
+                            <div class="students-count">234명 수강</div>
+                        </div>
+                        <div class="course-price">
+                            <span class="original-price">50만원</span>
+                            <span class="current-price">35만원</span>
+                            <span class="discount">30% 할인</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 추가 강좌들 -->
+                <div class="course-item" data-category="startup">
+                    <div class="course-thumbnail">
+                        <img src="images/shop1.jpg" alt="창업 전략 강좌">
+                        <div class="course-level">초급</div>
+                        <div class="course-duration">4주</div>
+                    </div>
+                    <div class="course-info">
+                        <div class="course-category">창업</div>
+                        <h3 class="course-title">
+                            <a href="course-detail.html?id=5">소상공인을 위한 창업 전략</a>
+                        </h3>
+                        <p class="course-subtitle">실패 없는 창업을 위한 필수 가이드</p>
+                        <div class="instructor-info">
+                            <img src="images/man2.jpg" alt="강사" class="instructor-avatar">
+                            <span class="instructor-name">정창업</span>
+                        </div>
+                        <div class="course-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★☆</span>
+                                <span class="rating-score">4.6</span>
+                                <span class="review-count">(312)</span>
+                            </div>
+                            <div class="students-count">1,890명 수강</div>
+                        </div>
+                        <div class="course-price">
+                            <span class="current-price">30만원</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-item" data-category="menu">
+                    <div class="course-thumbnail">
+                        <img src="images/menu.jpg" alt="메뉴 개발 강좌">
+                        <div class="course-level">중급</div>
+                        <div class="course-duration">6주</div>
+                    </div>
+                    <div class="course-info">
+                        <div class="course-category">메뉴개발</div>
+                        <h3 class="course-title">
+                            <a href="course-detail.html?id=6">고객을 사로잡는 메뉴 개발</a>
+                        </h3>
+                        <p class="course-subtitle">매출 향상을 위한 전략적 메뉴 기획</p>
+                        <div class="instructor-info">
+                            <img src="images/instructor-new.jpg" alt="강사" class="instructor-avatar">
+                            <span class="instructor-name">한메뉴</span>
+                        </div>
+                        <div class="course-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-score">4.8</span>
+                                <span class="review-count">(156)</span>
+                            </div>
+                            <div class="students-count">678명 수강</div>
+                        </div>
+                        <div class="course-price">
+                            <span class="original-price">60만원</span>
+                            <span class="current-price">45만원</span>
+                            <span class="discount">25% 할인</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 강좌 카드 7 -->
+                <div class="course-item" data-category="marketing">
+                    <div class="course-thumbnail">
+                        <img src="images/pd11.jpg" alt="데이터 분석 강좌">
+                        <div class="course-level">중급</div>
+                        <div class="course-duration">8주</div>
+                    </div>
+                    <div class="course-info">
+                        <div class="course-category">마케팅</div>
+                        <h3 class="course-title">
+                            <a href="course-detail.html?id=7">데이터 기반 마케팅 분석</a>
+                        </h3>
+                        <p class="course-subtitle">구글 애널리틱스부터 고객 행동 분석까지</p>
+                        <div class="instructor-info">
+                            <img src="images/man2.jpg" alt="강사" class="instructor-avatar">
+                            <span class="instructor-name">김데이터</span>
+                        </div>
+                        <div class="course-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-score">4.9</span>
+                                <span class="review-count">(287)</span>
+                            </div>
+                            <div class="students-count">1,456명 수강</div>
+                        </div>
+                        <div class="course-price">
+                            <span class="original-price">90만원</span>
+                            <span class="current-price">60만원</span>
+                            <span class="discount">33% 할인</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 강좌 카드 8 -->
+                <div class="course-item" data-category="marketing">
+                    <div class="course-thumbnail">
+                        <img src="images/pd12.jpg" alt="디지털 마케팅 강좌">
+                        <div class="course-level">고급</div>
+                        <div class="course-duration">10주</div>
+                    </div>
+                    <div class="course-info">
+                        <div class="course-category">마케팅</div>
+                        <h3 class="course-title">
+                            <a href="course-detail.html?id=8">올인원 디지털 마케팅</a>
+                        </h3>
+                        <p class="course-subtitle">검색광고부터 소셜미디어까지 통합 전략</p>
+                        <div class="instructor-info">
+                            <img src="images/instructor-new.jpg" alt="강사" class="instructor-avatar">
+                            <span class="instructor-name">이디지털</span>
+                        </div>
+                        <div class="course-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★☆</span>
+                                <span class="rating-score">4.7</span>
+                                <span class="review-count">(194)</span>
+                            </div>
+                            <div class="students-count">923명 수강</div>
+                        </div>
+                        <div class="course-price">
+                            <span class="original-price">120만원</span>
+                            <span class="current-price">80만원</span>
+                            <span class="discount">33% 할인</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 강좌 카드 9 -->
+                <div class="course-item" data-category="startup">
+                    <div class="course-thumbnail">
+                        <img src="images/pd13.jpg" alt="투자 전략 강좌">
+                        <div class="course-level">고급</div>
+                        <div class="course-duration">12주</div>
+                    </div>
+                    <div class="course-info">
+                        <div class="course-category">창업</div>
+                        <h3 class="course-title">
+                            <a href="course-detail.html?id=9">스타트업 투자 전략</a>
+                        </h3>
+                        <p class="course-subtitle">엔젤투자부터 시리즈 A까지 투자 유치 완전정복</p>
+                        <div class="instructor-info">
+                            <img src="images/man2.jpg" alt="강사" class="instructor-avatar">
+                            <span class="instructor-name">박투자</span>
+                        </div>
+                        <div class="course-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-score">4.8</span>
+                                <span class="review-count">(76)</span>
+                            </div>
+                            <div class="students-count">342명 수강</div>
+                        </div>
+                        <div class="course-price">
+                            <span class="original-price">200만원</span>
+                            <span class="current-price">150만원</span>
+                            <span class="discount">25% 할인</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 강좌 카드 10 -->
+                <div class="course-item" data-category="startup">
+                    <div class="course-thumbnail">
+                        <img src="images/pd14.jpg" alt="프로젝트 관리 강좌">
+                        <div class="course-level">중급</div>
+                        <div class="course-duration">6주</div>
+                    </div>
+                    <div class="course-info">
+                        <div class="course-category">창업</div>
+                        <h3 class="course-title">
+                            <a href="course-detail.html?id=10">애자일 프로젝트 관리</a>
+                        </h3>
+                        <p class="course-subtitle">스크럼과 칸반으로 완성하는 효율적 팀 관리</p>
+                        <div class="instructor-info">
+                            <img src="images/instructor-new.jpg" alt="강사" class="instructor-avatar">
+                            <span class="instructor-name">최프로젝트</span>
+                        </div>
+                        <div class="course-stats">
+                            <div class="rating">
+                                <span class="stars">★★★★☆</span>
+                                <span class="rating-score">4.6</span>
+                                <span class="review-count">(128)</span>
+                            </div>
+                            <div class="students-count">567명 수강</div>
+                        </div>
+                        <div class="course-price">
+                            <span class="original-price">70만원</span>
+                            <span class="current-price">50만원</span>
+                            <span class="discount">29% 할인</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 페이지네이션 -->
+            <div class="pagination">
+                <button class="pagination-btn prev" disabled>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="pagination-numbers">
+                    <button class="pagination-number active">1</button>
+                    <button class="pagination-number">2</button>
+                    <button class="pagination-number">3</button>
+                    <span class="pagination-dots">...</span>
+                    <button class="pagination-number">10</button>
+                </div>
+                <button class="pagination-btn next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#">이용약관</a>
+                    <span>|</span>
+                    <a href="#">개인정보처리방침</a>
+                </div>
+                <div class="footer-info">
+                    <p>고객센터 02-6952-9454, 9455</p>
+                    <p>FAX 02-6952-9553</p>
+                    <p>운영시간 오전10시~ 오후 6시(주말, 공휴일 제외)</p>
+                    <p>주소 서울특별시 서초구 논현로 173, 5층</p>
+                    <p>사업자등록번호 211-88-80844</p>
+                    <p>통신판매업신고 2021-서울서초-3279</p>
+                    <p>업체명 주식회사 중간계캠퍼스</p>
+                    <p>대표이사 신병철</p>
+                    <p>개인정보관리 책임자 전진 midcampus31@gmail.com</p>
+                </div>
+                <div class="social-links">
+                    <a href="#" aria-label="인스타그램"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="페이스북"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="유튜브"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="블로그"><i class="fas fa-blog"></i></a>
+                </div>
+                <div class="copyright">
+                    <p>COPYRIGHT 중간계캠퍼스. ALL RIGHTS RESERVED</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="courses.js"></script>
+</body>
+</html> 

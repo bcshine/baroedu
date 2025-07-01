@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>바로교육 - 바로 배워서, 바로 써먹습니다</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="images/logo.png" alt="바로교육 로고">
+                    <span class="brand-name">바로교육</span>
+                </div>
+                <nav class="nav">
+                    <ul class="nav-menu">
+                        <li><a href="courses.html">강의</a></li>
+                        <li><a href="#reviews">후기</a></li>
+                        <li><a href="#myclass">나의강의실</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="btn-login">로그인</button>
+                    <button class="btn-signup">회원가입</button>
+                </div>
+                <div class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 히어로 배너 -->
+    <section class="hero">
+        <div class="hero-slider">
+            <div class="slide active" style="background-image: url('images/hero01.jpg')">
+                <div class="slide-content">
+                    <h1 class="brand-title">바로교육</h1>
+                    <h2>바로 배워서, 바로 써먹습니다.</h2>
+                    <p>당장 필요한 것을 바로 사용한다.</p>
+                    <button class="btn-start">지금 시작하기</button>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('images/heri02.jpg')">
+                <div class="slide-content">
+                    <h1 class="brand-title">바로교육</h1>
+                    <h2>쉽고 빠르게, 원하는 것을 손쉽게</h2>
+                    <p>아이디어에서 실현까지 바로교육이 함께합니다</p>
+                    <button class="btn-start">지금 시작하기</button>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('images/hero03.jpg')">
+                <div class="slide-content">
+                    <h1 class="brand-title">바로교육</h1>
+                    <h2>상상력에 날개를, 날아 오르다</h2>
+                    <p>꿈이 아니라, 현실이 될 것입니다</p>
+                    <button class="btn-start">지금 시작하기</button>
+                </div>
+            </div>
+        </div>
+        <button class="slider-arrow prev">‹</button>
+        <button class="slider-arrow next">›</button>
+    </section>
+
+    <!-- 베스트강좌 -->
+    <section id="courses" class="courses">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 class="section-title">🏆 베스트강좌</h2>
+                <a href="courses.html" class="view-all-btn">전체보기 →</a>
+            </div>
+            <div class="courses-grid">
+                <div class="course-card" onclick="location.href='course-detail.html?id=1'" style="cursor: pointer;">
+                    <div class="course-image">
+                        <img src="images/pd1.jpg" alt="AI 상세페이지">
+                    </div>
+                    <div class="course-content">
+                        <h3>AI 상세페이지 최적화</h3>
+                        <p class="course-subtitle">AI,인공지능 추천에 최적화된 상세페이지</p>
+                        <p class="course-description">상세페이지 기획 + 구성 + 디자인</p>
+                        <div class="instructor-info" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                            <img src="images/man2.jpg" alt="강사" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">
+                            <span style="font-size: 0.9rem; color: #666;">김마케팅</span>
+                        </div>
+                        <a href="course-detail.html?id=1" class="btn-more">강좌 보기</a>
+                        <div class="course-details">
+                            <p>고객의 구매 패턴을 분석하여 개인 맞춤형 상품을 구성합니다.</p>
+                            <p><strong>기간:</strong> 2주</p>
+                            <p><strong>가격:</strong> 50만원 (정가 100만원, 50% 할인)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" onclick="location.href='course-detail.html?id=2'" style="cursor: pointer;">
+                    <div class="course-image">
+                        <img src="images/pd2.jpg" alt="AI 쇼츠">
+                    </div>
+                    <div class="course-content">
+                        <h3>AI 쇼츠, 릴스 마스터</h3>
+                        <p class="course-subtitle">30~60초 바이럴 콘텐츠 제작법</p>
+                        <p class="course-description">30초로 매출 올리는 쇼츠 제작법</p>
+                        <div class="instructor-info" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                            <img src="images/instructor-new.jpg" alt="강사" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">
+                            <span style="font-size: 0.9rem; color: #666;">이콘텐츠</span>
+                        </div>
+                        <a href="course-detail.html?id=2" class="btn-more">강좌 보기</a>
+                        <div class="course-details">
+                            <p>AI 추천 알고리즘을 활용한 바이럴 영상 제작 노하우</p>
+                            <p><strong>기간:</strong> 2주</p>
+                            <p><strong>가격:</strong> 40만원 (정가 80만원, 50% 할인)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" onclick="location.href='course-detail.html?id=3'" style="cursor: pointer;">
+                    <div class="course-image">
+                        <img src="images/pd3.jpg" alt="웹페이지">
+                    </div>
+                    <div class="course-content">
+                        <h3>AI 최적화 웹페이지 제작</h3>
+                        <p class="course-subtitle">전환율 높이는 웹페이지 완성</p>
+                        <p class="course-description">기획부터 배포까지 전과정 마스터</p>
+                        <div class="instructor-info" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                            <img src="images/man2.jpg" alt="강사" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">
+                            <span style="font-size: 0.9rem; color: #666;">박웹개발</span>
+                        </div>
+                        <a href="course-detail.html?id=3" class="btn-more">강좌 보기</a>
+                        <div class="course-details">
+                            <p>기획부터 디자인, 배포까지 전 과정 원스톱 지원</p>
+                            <p><strong>기간:</strong> 3개월</p>
+                            <p><strong>가격:</strong> 60만원 (정가 120만원, 50% 할인)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" onclick="location.href='course-detail.html?id=4'" style="cursor: pointer;">
+                    <div class="course-image">
+                        <img src="images/instructor-new.jpg" alt="브랜드 네이밍">
+                    </div>
+                    <div class="course-content">
+                        <h3>브랜드 네이밍 패키지</h3>
+                        <p class="course-subtitle">현존 최고수준의 브랜드 네임</p>
+                        <p class="course-description">잊을 수 없는 브랜드명 만들기</p>
+                        <div class="instructor-info" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                            <img src="images/instructor-new.jpg" alt="강사" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">
+                            <span style="font-size: 0.9rem; color: #666;">최브랜딩</span>
+                        </div>
+                        <a href="course-detail.html?id=4" class="btn-more">강좌 보기</a>
+                        <div class="course-details">
+                            <p>브랜드 이름, 슬로건, 브랜드 스토리까지 완성</p>
+                            <p><strong>기간:</strong> 1개월</p>
+                            <p><strong>가격:</strong> 35만원 (정가 50만원, 30% 할인)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 창업강좌 -->
+    <section class="courses startup">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 class="section-title">🚀 창업강좌</h2>
+                <a href="courses.html?category=창업" class="view-all-btn">전체보기 →</a>
+            </div>
+            <div class="courses-grid">
+                <div class="course-card" onclick="location.href='course-detail.html?id=5'" style="cursor: pointer;">
+                    <div class="course-image">
+                        <img src="images/portfolio2.jpg" alt="소상공인 창업">
+                    </div>
+                    <div class="course-content">
+                        <h3>소상공인을 위한 창업 전략</h3>
+                        <p class="course-subtitle">성공하는 소상공인 되기</p>
+                        <p class="course-description">창업 아이템 발굴부터 운영까지</p>
+                        <a href="course-detail.html?id=5" class="btn-more">강좌 보기</a>
+                        <div class="course-details">
+                            <p>실패 없는 창업을 위한 체계적인 전략 수립</p>
+                            <p><strong>기간:</strong> 4주</p>
+                            <p><strong>가격:</strong> 30만원 (40% 할인)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" onclick="location.href='course-detail.html?id=6'" style="cursor: pointer;">
+                    <div class="course-image">
+                        <img src="images/portfolio4.jpg" alt="메뉴개발">
+                    </div>
+                    <div class="course-content">
+                        <h3>고객을 사로잡는 메뉴 개발</h3>
+                        <p class="course-subtitle">차별화된 메뉴로 승부하기</p>
+                        <p class="course-description">매출 증대를 위한 메뉴 전략</p>
+                        <a href="course-detail.html?id=6" class="btn-more">강좌 보기</a>
+                        <div class="course-details">
+                            <p>고객의 마음을 사로잡는 메뉴 개발 노하우</p>
+                            <p><strong>기간:</strong> 6주</p>
+                            <p><strong>가격:</strong> 45만원 (정가 60만원, 25% 할인)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" onclick="location.href='course-detail.html?id=9'" style="cursor: pointer;">
+                    <div class="course-image">
+                        <img src="images/pd13.jpg" alt="스타트업 투자">
+                    </div>
+                    <div class="course-content">
+                        <h3>스타트업 투자 전략</h3>
+                        <p class="course-subtitle">성공적인 투자 유치 가이드</p>
+                        <p class="course-description">투자자가 원하는 스타트업 만들기</p>
+                        <a href="course-detail.html?id=9" class="btn-more">강좌 보기</a>
+                        <div class="course-details">
+                            <p>투자 유치부터 성장 전략까지 완벽 마스터</p>
+                            <p><strong>기간:</strong> 12주</p>
+                            <p><strong>가격:</strong> 150만원 (정가 200만원, 25% 할인)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" onclick="location.href='course-detail.html?id=10'" style="cursor: pointer;">
+                    <div class="course-image">
+                        <img src="images/pd14.jpg" alt="프로젝트 관리">
+                    </div>
+                    <div class="course-content">
+                        <h3>애자일 프로젝트 관리</h3>
+                        <p class="course-subtitle">효율적인 프로젝트 관리법</p>
+                        <p class="course-description">팀 생산성 극대화 전략</p>
+                        <a href="course-detail.html?id=10" class="btn-more">강좌 보기</a>
+                        <div class="course-details">
+                            <p>애자일 방법론으로 프로젝트 성공률 높이기</p>
+                            <p><strong>기간:</strong> 6주</p>
+                            <p><strong>가격:</strong> 50만원 (정가 70만원, 29% 할인)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 마케팅강좌 -->
+    <section class="courses marketing">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 class="section-title">📈 마케팅 브랜드 강좌</h2>
+                <a href="courses.html?category=마케팅" class="view-all-btn">전체보기 →</a>
+            </div>
+            <div class="courses-grid">
+                <div class="course-card" onclick="location.href='course-detail.html?id=7'" style="cursor: pointer;">
+                    <div class="course-image">
+                        <img src="images/pd11.jpg" alt="데이터 마케팅">
+                    </div>
+                    <div class="course-content">
+                        <h3>데이터 기반 마케팅 분석</h3>
+                        <p class="course-subtitle">데이터로 증명하는 마케팅 성과</p>
+                        <p class="course-description">고급 분석 도구 활용법</p>
+                        <a href="course-detail.html?id=7" class="btn-more">강좌 보기</a>
+                        <div class="course-details">
+                            <p>데이터 분석으로 마케팅 ROI 극대화하기</p>
+                            <p><strong>기간:</strong> 8주</p>
+                            <p><strong>가격:</strong> 60만원 (정가 90만원, 33% 할인)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" onclick="location.href='course-detail.html?id=8'" style="cursor: pointer;">
+                    <div class="course-image">
+                        <img src="images/pd12.jpg" alt="디지털 마케팅">
+                    </div>
+                    <div class="course-content">
+                        <h3>올인원 디지털 마케팅</h3>
+                        <p class="course-subtitle">통합 디지털 마케팅 전략</p>
+                        <p class="course-description">SNS부터 광고까지 한번에</p>
+                        <a href="course-detail.html?id=8" class="btn-more">강좌 보기</a>
+                        <div class="course-details">
+                            <p>모든 디지털 채널을 활용한 통합 마케팅</p>
+                            <p><strong>기간:</strong> 10주</p>
+                            <p><strong>가격:</strong> 80만원 (정가 120만원, 33% 할인)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" onclick="location.href='course-detail.html?id=2'" style="cursor: pointer;">
+                    <div class="course-image">
+                        <img src="images/pd2.jpg" alt="SNS 마케팅">
+                    </div>
+                    <div class="course-content">
+                        <h3>AI 쇼츠, 릴스 마스터</h3>
+                        <p class="course-subtitle">바이럴 콘텐츠 제작 마스터</p>
+                        <p class="course-description">30초로 매출 올리는 쇼츠 제작법</p>
+                        <a href="course-detail.html?id=2" class="btn-more">강좌 보기</a>
+                        <div class="course-details">
+                            <p>AI 추천 알고리즘을 활용한 바이럴 영상 제작</p>
+                            <p><strong>기간:</strong> 2주</p>
+                            <p><strong>가격:</strong> 40만원 (50% 할인)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" onclick="location.href='course-detail.html?id=1'" style="cursor: pointer;">
+                    <div class="course-image">
+                        <img src="images/pd1.jpg" alt="AI 마케팅">
+                    </div>
+                    <div class="course-content">
+                        <h3>AI 상세페이지 최적화</h3>
+                        <p class="course-subtitle">전환율 높이는 AI 페이지</p>
+                        <p class="course-description">AI로 최적화된 상세페이지 제작</p>
+                        <a href="course-detail.html?id=1" class="btn-more">강좌 보기</a>
+                        <div class="course-details">
+                            <p>고객의 구매 패턴을 분석한 맞춤형 페이지</p>
+                            <p><strong>기간:</strong> 2주</p>
+                            <p><strong>가격:</strong> 50만원 (50% 할인)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 웹개발강좌 -->
+    <section class="courses webdev">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 class="section-title">💻 웹개발강좌</h2>
+                <a href="courses.html?category=웹개발" class="view-all-btn">전체보기 →</a>
+            </div>
+            <div class="courses-grid">
+                <div class="course-card" onclick="location.href='course-detail.html?id=3'" style="cursor: pointer;">
+                    <div class="course-image">
+                        <img src="images/pd3.jpg" alt="웹페이지 제작">
+                    </div>
+                    <div class="course-content">
+                        <h3>AI 최적화 웹페이지 제작</h3>
+                        <p class="course-subtitle">전환율 높이는 웹페이지 완성</p>
+                        <p class="course-description">기획부터 배포까지 전과정 마스터</p>
+                        <a href="course-detail.html?id=3" class="btn-more">강좌 보기</a>
+                        <div class="course-details">
+                            <p>기획부터 디자인, 배포까지 전 과정 원스톱 지원</p>
+                            <p><strong>기간:</strong> 3개월</p>
+                            <p><strong>가격:</strong> 60만원 (정가 120만원, 50% 할인)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" onclick="location.href='courses.html'" style="cursor: pointer;">
+                    <div class="course-image">
+                        <img src="images/portfolio9.jpg" alt="HTML CSS">
+                    </div>
+                    <div class="course-content">
+                        <h3>HTML & CSS 기초</h3>
+                        <p class="course-subtitle">웹개발의 첫걸음</p>
+                        <p class="course-description">기초부터 탄탄하게 배우는 웹개발</p>
+                        <a href="courses.html" class="btn-more">강좌 보기</a>
+                        <div class="course-details">
+                            <p>웹사이트 제작을 위한 기본 언어 완전 정복</p>
+                            <p><strong>기간:</strong> 6주</p>
+                            <p><strong>가격:</strong> 35만원 (30% 할인)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" onclick="location.href='courses.html'" style="cursor: pointer;">
+                    <div class="course-image">
+                        <img src="images/shop1.jpg" alt="JavaScript">
+                    </div>
+                    <div class="course-content">
+                        <h3>JavaScript 마스터</h3>
+                        <p class="course-subtitle">동적 웹사이트 제작</p>
+                        <p class="course-description">인터랙티브한 웹페이지 만들기</p>
+                        <a href="courses.html" class="btn-more">강좌 보기</a>
+                        <div class="course-details">
+                            <p>기초 문법부터 실전 프로젝트까지</p>
+                            <p><strong>기간:</strong> 8주</p>
+                            <p><strong>가격:</strong> 45만원 (25% 할인)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="course-card" onclick="location.href='courses.html'" style="cursor: pointer;">
+                    <div class="course-image">
+                        <img src="images/webdesign.png" alt="반응형 웹">
+                    </div>
+                    <div class="course-content">
+                        <h3>반응형 웹 디자인</h3>
+                        <p class="course-subtitle">모든 기기에서 완벽한 화면</p>
+                        <p class="course-description">모바일부터 데스크톱까지</p>
+                        <a href="courses.html" class="btn-more">강좌 보기</a>
+                        <div class="course-details">
+                            <p>다양한 화면 크기에 최적화된 웹사이트 제작</p>
+                            <p><strong>기간:</strong> 5주</p>
+                            <p><strong>가격:</strong> 40만원 (20% 할인)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 사용자 후기 -->
+    <section id="reviews" class="reviews">
+        <div class="container">
+            <h2 class="section-title">사용자 후기</h2>
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"AI 상세페이지 강의를 듣고 매출이 30% 증가했습니다. 
+                    정말 실무에 바로 적용할 수 있는 내용들이었어요."</p>
+                    <div class="reviewer">
+                        <strong>김○○</strong> <span>카페 사장</span>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"쇼츠 제작 강의 덕분에 인스타그램 팔로워가 
+                    1만명 늘었습니다. 바로 써먹을 수 있는 꿀팁들이 가득해요!"</p>
+                    <div class="reviewer">
+                        <strong>이○○</strong> <span>온라인쇼핑몰 대표</span>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"웹페이지 강의로 홈페이지를 새로 만들었는데 
+                    문의 전화가 2배 늘었어요. 정말 감사합니다."</p>
+                    <div class="reviewer">
+                        <strong>박○○</strong> <span>미용실 원장</span>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"브랜드 네이밍 강의 후 새로운 브랜드로 
+                    재오픈했더니 고객 반응이 완전히 달라졌습니다."</p>
+                    <div class="reviewer">
+                        <strong>최○○</strong> <span>베이커리 사장</span>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"실무 중심의 강의라 바로바로 적용할 수 있어서 좋았어요. 
+                    매출 향상에 직접적인 도움이 되었습니다."</p>
+                    <div class="reviewer">
+                        <strong>정○○</strong> <span>식당 사장</span>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"바로교육 덕분에 디지털 마케팅에 자신감이 생겼어요. 
+                    이제 온라인으로도 손님들이 많이 찾아와요."</p>
+                    <div class="reviewer">
+                        <strong>장○○</strong> <span>펜션 운영자</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 브랜드 안내 -->
+    <section class="brand-info">
+        <div class="container">
+            <h2 class="section-title">브랜드 안내</h2>
+            <div class="brand-content">
+                <div class="brand-philosophy">
+                    <h3>브랜드 철학</h3>
+                    <p>바로 배워서, 바로 써먹는다. 우리는 실무에 바로 적용할 수 있는 실질적인 교육을 제공합니다.</p>
+                </div>
+                <div class="brand-features">
+                    <h3>브랜드 특징</h3>
+                    <ul>
+                        <li>실무 중심의 실용적 교육</li>
+                        <li>AI 기반 맞춤형 학습</li>
+                        <li>소상공인을 위한 전문 컨설팅</li>
+                        <li>즉시 적용 가능한 노하우 전수</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#">이용약관</a>
+                    <span>|</span>
+                    <a href="#">개인정보처리방침</a>
+                </div>
+                <div class="footer-info">
+                    <p>고객센터 02-6952-9454, 9455</p>
+                    <p>FAX 02-6952-9553</p>
+                    <p>운영시간 오전10시~ 오후 6시(주말, 공휴일 제외)</p>
+                    <p>주소 서울특별시 서초구 논현로 173, 5층</p>
+                    <p>사업자등록번호 211-88-80844</p>
+                    <p>통신판매업신고 2021-서울서초-3279</p>
+                    <p>업체명 주식회사 중간계캠퍼스</p>
+                    <p>대표이사 신병철</p>
+                    <p>개인정보관리 책임자 전진 midcampus31@gmail.com</p>
+                </div>
+                <div class="social-links">
+                    <a href="#" aria-label="인스타그램"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="페이스북"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="유튜브"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="블로그"><i class="fas fa-blog"></i></a>
+                </div>
+                <div class="copyright">
+                    <p>COPYRIGHT 중간계캠퍼스. ALL RIGHTS RESERVED</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 
