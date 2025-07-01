@@ -648,4 +648,625 @@ body {
     .courses, .reviews, .brand-info {
         padding: 2.5rem 0;
     }
+}
+
+/* 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 2% auto;
+    padding: 0;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 450px;
+    max-height: 90vh; /* 화면 높이의 90%로 더 여유있게 */
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease-out;
+    overflow: visible; /* 오버플로우를 visible로 변경 */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, var(--primary-color), #1e4785);
+    color: white;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.close {
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+    transition: opacity 0.2s;
+}
+
+.close:hover {
+    opacity: 0.7;
+}
+
+.modal-body {
+    padding: 2rem;
+    overflow-y: auto; /* 세로 스크롤 추가 */
+    flex: 1; /* 남은 공간 모두 사용 */
+    min-height: 0; /* flexbox에서 스크롤이 제대로 작동하도록 */
+    max-height: calc(90vh - 100px); /* 헤더 공간 제외 */
+}
+
+/* 폼 스타일 */
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+}
+
+.input-group input::placeholder {
+    color: #999;
+}
+
+/* 폼 옵션 */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+/* 간단하고 확실한 체크박스 */
+.checkbox-container {
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: #666;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0;
+    gap: 0.5rem;
+}
+
+.checkbox-container input[type="checkbox"] {
+    /* 브라우저 기본 체크박스 사용하되 크기만 조정 */
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    margin: 0;
+    flex-shrink: 0;
+    accent-color: var(--primary-color); /* 체크박스 색상 */
+}
+
+.checkbox-container label {
+    cursor: pointer;
+    line-height: 1.4;
+}
+
+.checkbox-container:hover {
+    color: #333;
+}
+
+/* checkmark 스타일 제거 */
+.checkmark {
+    display: none;
+}
+
+/* 새로운 체크박스 그룹 - 테스트에서 성공한 방식 */
+.checkbox-section {
+    margin: 1.5rem 0;
+}
+
+.checkbox-group-new {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.checkbox-group-new input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #2c5aa0;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.checkbox-label-new {
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.checkbox-label-new a {
+    color: #2c5aa0;
+    text-decoration: none;
+}
+
+.checkbox-label-new a:hover {
+    text-decoration: underline;
+}
+
+.forgot-password {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.2s;
+}
+
+.forgot-password:hover {
+    color: #1e4785;
+    text-decoration: underline;
+}
+
+/* 인증 버튼 */
+.btn-auth {
+    width: 100%;
+    padding: 0.875rem;
+    background: linear-gradient(135deg, var(--primary-color), #1e4785);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 999; /* 버튼이 다른 요소 위에 표시되도록 */
+}
+
+.btn-auth:hover {
+    background: linear-gradient(135deg, #1e4785, var(--primary-color));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
+}
+
+.btn-auth:active {
+    transform: translateY(0);
+}
+
+/* 구분선 */
+.divider {
+    text-align: center;
+    margin: 1.5rem 0;
+    position: relative;
+}
+
+.divider:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #e1e5e9;
+}
+
+.divider span {
+    background: white;
+    padding: 0 1rem;
+    color: #999;
+    font-size: 0.875rem;
+}
+
+/* 소셜 로그인 버튼 */
+.btn-social {
+    width: 100%;
+    padding: 0.875rem;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    background: white;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-social:hover {
+    border-color: #ddd;
+    background: #f8f9fa;
+    transform: translateY(-1px);
+}
+
+.btn-social.google {
+    color: #4285f4;
+}
+
+.btn-social.google:hover {
+    border-color: #4285f4;
+    background: rgba(66, 133, 244, 0.04);
+}
+
+/* 인증 전환 */
+.auth-switch {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.auth-switch p {
+    margin: 0;
+    color: #666;
+    font-size: 0.875rem;
+}
+
+.auth-switch a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.auth-switch a:hover {
+    color: #1e4785;
+    text-decoration: underline;
+}
+
+/* 비밀번호 재설정 정보 */
+.reset-info {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* 회원가입 폼 완전히 새로운 구조 */
+#signupModal .modal-content {
+    max-height: 85vh !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+#signupModal .modal-body {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    padding: 1.5rem !important;
+    max-height: calc(85vh - 120px) !important;
+}
+
+#signupModal .btn-auth {
+    margin: 1rem 2rem 2rem 2rem !important;
+    padding: 1rem !important;
+    background: linear-gradient(135deg, #2c5aa0, #1e4785) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 1.1rem !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    position: relative !important;
+    z-index: 1000 !important;
+    display: block !important;
+    width: calc(100% - 4rem) !important;
+    visibility: visible !important;
+}
+
+/* 소셜 로그인 버튼도 동일하게 적용 */
+#signupModal .btn-social {
+    display: block !important;
+    visibility: visible !important;
+    margin: 1rem 2rem !important;
+    width: calc(100% - 4rem) !important;
+}
+
+/* 비밀번호 재설정 모달 */
+#resetPasswordModal .btn-auth {
+    display: block !important;
+    visibility: visible !important;
+    margin: 1rem 2rem !important;
+    width: calc(100% - 4rem) !important;
+}
+
+/* 로그인 모달도 동일한 스타일 적용 */
+#loginModal .modal-content {
+    max-height: 85vh !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+#loginModal .modal-body {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    padding: 1.5rem !important;
+    max-height: calc(85vh - 120px) !important;
+}
+
+#loginModal .btn-auth {
+    margin: 1rem 2rem 2rem 2rem !important;
+    padding: 1rem !important;
+    background: linear-gradient(135deg, #2c5aa0, #1e4785) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 1.1rem !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    position: relative !important;
+    z-index: 1000 !important;
+    display: block !important;
+    width: calc(100% - 4rem) !important;
+    visibility: visible !important;
+}
+
+/* 소셜 로그인 버튼도 동일하게 적용 */
+#loginModal .btn-social {
+    display: block !important;
+    visibility: visible !important;
+    margin: 1rem 2rem !important;
+    width: calc(100% - 4rem) !important;
+}
+
+/* 사용자 메뉴 직접 표시 스타일 */
+.user-menu {
+    display: none;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.user-info:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.user-info i {
+    font-size: 1.5rem;
+    color: #ffffff;
+}
+
+.user-name {
+    color: #ffffff !important;
+    font-weight: 500;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.btn-logout {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-logout:hover {
+    background: linear-gradient(135deg, #c0392b, #a93226);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+}
+
+.btn-logout:active {
+    transform: translateY(0);
+}
+
+.btn-logout i {
+    font-size: 0.875rem;
+}
+
+/* 모바일 최적화 */
+@media (max-width: 480px) {
+    .modal-content {
+        margin: 1% auto;
+        width: 95%;
+        max-height: 98vh; /* 모바일에서는 더 큰 비율 사용 */
+    }
+    
+    .modal-header {
+        padding: 1rem 1.5rem;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.25rem;
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .form-options {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .checkbox-container {
+        font-size: 0.8rem;
+    }
+    
+    /* 모바일에서 회원가입 폼 완전 새로운 방식 */
+    #signupModal .modal-content {
+        margin: 5% auto !important;
+        width: 95% !important;
+        max-height: 90vh !important;
+        height: 90vh !important;
+    }
+    
+    #signupModal .modal-body {
+        height: calc(90vh - 140px) !important;
+        overflow-y: scroll !important;
+        padding: 1rem !important;
+    }
+    
+    #signupModal .btn-auth {
+        position: absolute !important;
+        bottom: 20px !important;
+        left: 1rem !important;
+        right: 1rem !important;
+        width: calc(100% - 2rem) !important;
+        margin: 0 !important;
+        padding: 1rem !important;
+        background: #2c5aa0 !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 8px !important;
+        font-size: 1.1rem !important;
+        font-weight: bold !important;
+        z-index: 9999 !important;
+    }
+}
+
+
+
+/* 로딩 상태 스타일 */
+.btn-auth:disabled,
+.btn-logout:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.btn-auth:disabled:hover,
+.btn-logout:disabled:hover {
+    transform: none !important;
+    box-shadow: none;
+}
+
+/* 에러 상태 input 스타일 */
+.input-group input.error {
+    border-color: #e74c3c !important;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1) !important;
+}
+
+.input-group input.success {
+    border-color: #27ae60 !important;
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1) !important;
+}
+
+/* 사용자 메뉴 모바일 최적화 */
+@media (max-width: 768px) {
+    .user-menu {
+        gap: 0.75rem;
+    }
+    
+    .user-info {
+        padding: 0.4rem 0.8rem;
+    }
+    
+    .user-name {
+        font-size: 0.8rem;
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .btn-logout {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    
+    .btn-logout i {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .user-menu {
+        gap: 0.5rem;
+    }
+    
+    .user-info {
+        padding: 0.3rem 0.6rem;
+    }
+    
+    .user-name {
+        font-size: 0.75rem;
+        max-width: 80px;
+    }
+    
+    .btn-logout {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.75rem;
+    }
+    
+    .btn-logout span {
+        display: none; /* 모바일에서는 아이콘만 표시 */
+    }
 } 
