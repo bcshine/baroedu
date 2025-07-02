@@ -260,68 +260,25 @@ function setupAuthListener() {
     if (!supabase) return;
     
     supabase.auth.onAuthStateChange((event, session) => {
-        console.log('🔄 인증 상태 변경:', event, session);
+        console.log('🔄 Supabase 인증 상태 변경:', event, session?.user?.email || '로그아웃');
         
         if (session) {
             authManager.updateUser(session.user, session);
+            // script.js의 updateAuthUI 함수 호출
+            if (typeof window.updateAuthUI === 'function') {
+                window.updateAuthUI(session.user);
+            }
         } else {
             authManager.updateUser(null, null);
+            // script.js의 updateAuthUI 함수 호출
+            if (typeof window.updateAuthUI === 'function') {
+                window.updateAuthUI(null);
+            }
         }
-        
-        // UI 업데이트
-        updateAuthUI();
     });
 }
 
-// UI 업데이트 함수
-function updateAuthUI() {
-    const isLoggedIn = authManager.isAuthenticated();
-    const user = authManager.getCurrentUser();
-    
-    // 헤더 버튼 업데이트
-    const authButtons = document.querySelector('.auth-buttons');
-    const loginBtn = document.querySelector('.btn-login');
-    const signupBtn = document.querySelector('.btn-signup');
-    
-    if (isLoggedIn && user) {
-        // 로그인 상태: 사용자 메뉴 표시
-        if (authButtons) {
-            authButtons.innerHTML = `
-                <div class="user-menu">
-                    <span class="user-name">안녕하세요, ${user.user_metadata?.name || user.email}님</span>
-                    <button class="btn-logout" onclick="handleLogout()">로그아웃</button>
-                </div>
-            `;
-        }
-    } else {
-        // 로그아웃 상태: 기본 버튼들 표시
-        if (authButtons) {
-            authButtons.innerHTML = `
-                <button class="btn-login">로그인</button>
-                <button class="btn-signup">회원가입</button>
-            `;
-            
-            // 이벤트 리스너 재등록
-            const newLoginBtn = authButtons.querySelector('.btn-login');
-            const newSignupBtn = authButtons.querySelector('.btn-signup');
-            
-            if (newLoginBtn) newLoginBtn.addEventListener('click', () => openModal('loginModal'));
-            if (newSignupBtn) newSignupBtn.addEventListener('click', () => openModal('signupModal'));
-        }
-    }
-}
-
-// 로그아웃 핸들러
-async function handleLogout() {
-    const result = await authFunctions.signOut();
-    if (result.success) {
-        alert('로그아웃되었습니다.');
-        // 메인 페이지로 리다이렉트 (필요시)
-        // window.location.href = '/';
-    } else {
-        alert('로그아웃 중 오류가 발생했습니다.');
-    }
-}
+// supabase-client.js에서는 UI 업데이트 함수를 제거하고 script.js의 함수 사용
 
 // 초기화 및 내보내기
 document.addEventListener('DOMContentLoaded', async function() {
@@ -425,7 +382,13 @@ document.addEventListener('DOMContentLoaded', async function() {
             
             // 세션 복원
             try {
-                await authFunctions.restoreSession();
+                const { data: { session }, error } = await supabaseClient.auth.getSession();
+                if (session && session.user) {
+                    console.log('✅ 초기 세션 복원 성공:', session.user.email);
+                    authManager.updateUser(session.user, session);
+                } else if (error) {
+                    console.log('💡 세션 복원 오류:', error.message);
+                }
             } catch (error) {
                 console.log('💡 세션 없음 (정상):', error.message);
             }

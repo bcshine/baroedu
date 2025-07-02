@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="courses.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Supabase 라이브러리 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
 <body>
     <!-- 헤더 -->
@@ -28,8 +31,18 @@
                     </ul>
                 </nav>
                 <div class="auth-buttons">
-                    <button class="btn-login">로그인</button>
-                    <button class="btn-signup">회원가입</button>
+                    <button class="btn-login" onclick="openModal('loginModal')">로그인</button>
+                    <button class="btn-signup" onclick="openModal('signupModal')">회원가입</button>
+                </div>
+                <div class="user-menu" style="display: none;">
+                    <div class="user-info">
+                        <i class="fas fa-user-circle"></i>
+                        <span class="user-name">사용자님</span>
+                    </div>
+                    <button class="btn-logout" onclick="handleLogout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>로그아웃</span>
+                    </button>
                 </div>
                 <div class="mobile-menu-toggle">
                     <i class="fas fa-bars"></i>
@@ -462,6 +475,129 @@
         </div>
     </footer>
 
+    <!-- 로그인 모달 -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>로그인</h2>
+                <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="input-group">
+                        <label for="loginEmail">이메일</label>
+                        <input type="email" id="loginEmail" name="email" required placeholder="이메일을 입력하세요">
+                    </div>
+                    <div class="input-group">
+                        <label for="loginPassword">비밀번호</label>
+                        <input type="password" id="loginPassword" name="password" required placeholder="비밀번호를 입력하세요">
+                    </div>
+                    <div class="form-options">
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="rememberMe">
+                            <label for="rememberMe">로그인 상태 유지</label>
+                        </div>
+                        <a href="#" onclick="openModal('resetPasswordModal'); closeModal('loginModal');" class="forgot-password">비밀번호 찾기</a>
+                    </div>
+                    <button type="submit" class="btn-auth">로그인</button>
+                    <div class="divider">
+                        <span>또는</span>
+                    </div>
+                    <button type="button" class="btn-social google" onclick="loginWithGoogle()">
+                        <i class="fab fa-google"></i>
+                        Google로 로그인
+                    </button>
+                    <div class="auth-switch">
+                        <p>계정이 없으신가요? <a href="#" onclick="openModal('signupModal'); closeModal('loginModal');">회원가입</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 회원가입 모달 -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>회원가입</h2>
+                <span class="close" onclick="closeModal('signupModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="signupForm">
+                    <div class="input-group">
+                        <label for="signupName">이름</label>
+                        <input type="text" id="signupName" name="name" required placeholder="이름을 입력하세요">
+                    </div>
+                    <div class="input-group">
+                        <label for="signupEmail">이메일</label>
+                        <input type="email" id="signupEmail" name="email" required placeholder="이메일을 입력하세요">
+                    </div>
+                    <div class="input-group">
+                        <label for="signupPassword">비밀번호</label>
+                        <input type="password" id="signupPassword" name="password" required placeholder="비밀번호를 입력하세요 (8자 이상)">
+                    </div>
+                    <div class="input-group">
+                        <label for="signupPasswordConfirm">비밀번호 확인</label>
+                        <input type="password" id="signupPasswordConfirm" name="passwordConfirm" required placeholder="비밀번호를 다시 입력하세요">
+                    </div>
+                    <div class="input-group">
+                        <label for="signupPhone">전화번호 (선택)</label>
+                        <input type="tel" id="signupPhone" name="phone" placeholder="전화번호를 입력하세요">
+                    </div>
+                    <div class="checkbox-section">
+                        <div class="checkbox-group-new">
+                            <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                            <label for="agreeTerms" class="checkbox-label-new">
+                                <a href="#" target="_blank">이용약관</a> 및 <a href="#" target="_blank">개인정보처리방침</a>에 동의합니다 (필수)
+                            </label>
+                        </div>
+                        <div class="checkbox-group-new">
+                            <input type="checkbox" id="agreeMarketing" name="agreeMarketing">
+                            <label for="agreeMarketing" class="checkbox-label-new">마케팅 정보 수신에 동의합니다 (선택)</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-auth">회원가입</button>
+                    <div class="divider">
+                        <span>또는</span>
+                    </div>
+                    <button type="button" class="btn-social google" onclick="signupWithGoogle()">
+                        <i class="fab fa-google"></i>
+                        Google로 회원가입
+                    </button>
+                    <div class="auth-switch">
+                        <p>이미 계정이 있으신가요? <a href="#" onclick="openModal('loginModal'); closeModal('signupModal');">로그인</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 비밀번호 재설정 모달 -->
+    <div id="resetPasswordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>비밀번호 재설정</h2>
+                <span class="close" onclick="closeModal('resetPasswordModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="resetPasswordForm">
+                    <div class="input-group">
+                        <label for="resetEmail">이메일</label>
+                        <input type="email" id="resetEmail" name="email" required placeholder="가입한 이메일을 입력하세요">
+                    </div>
+                    <p class="reset-info">입력하신 이메일로 비밀번호 재설정 링크를 보내드립니다.</p>
+                    <button type="submit" class="btn-auth">재설정 링크 전송</button>
+                    <div class="auth-switch">
+                        <p><a href="#" onclick="openModal('loginModal'); closeModal('resetPasswordModal');">로그인으로 돌아가기</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase 클라이언트 먼저 로드 -->
+    <script src="js/supabase-client.js"></script>
+    <!-- 메인 스크립트 -->
     <script src="script.js"></script>
     <script src="courses.js"></script>
 </body>

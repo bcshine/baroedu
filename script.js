@@ -511,8 +511,19 @@ document.addEventListener('DOMContentLoaded', function() {
         resetPasswordForm.addEventListener('submit', handlePasswordReset);
     }
     
-    // 페이지 로드 시 인증 상태 확인
-    checkAuthStatus();
+    // 인증 관련 함수들을 전역으로 노출
+    window.updateAuthUI = updateAuthUI;
+    window.checkAuthStatus = checkAuthStatus;
+    
+    // 페이지 로드 시 인증 상태 확인 (지연 실행으로 Supabase 로드 보장)
+    setTimeout(() => {
+        checkAuthStatus();
+    }, 500);
+    
+    // 추가 안전장치: 2초 후 다시 한 번 확인
+    setTimeout(() => {
+        checkAuthStatus();
+    }, 2000);
     
     // Supabase 인증 상태 변경 리스너 설정
     setupSupabaseAuthListener();
@@ -547,24 +558,61 @@ function setupSupabaseAuthListener() {
 
 // 페이지 로드 시 인증 상태 확인
 async function checkAuthStatus() {
+    console.log('🔍 인증 상태 확인 시작...');
+    
     try {
-        // Supabase가 설정되어 있는지 확인
-        if (typeof window.authFunctions === 'undefined') {
-            console.log('💡 데모 모드 - 기본 UI 표시');
-            updateAuthUI(); // 로그아웃 상태로 초기화
+        // 1. Supabase 클라이언트 확인
+        if (!window.supabaseClient) {
+            console.log('⚠️ Supabase 클라이언트 없음 - authFunctions 확인');
+            
+            if (typeof window.authFunctions === 'undefined') {
+                console.log('💡 데모 모드 - 기본 UI 표시');
+                updateAuthUI(); // 로그아웃 상태로 초기화
+                return;
+            }
+        }
+        
+        // 2. AuthManager에서 현재 사용자 확인
+        if (window.authManager && window.authManager.isAuthenticated()) {
+            const currentUser = window.authManager.getCurrentUser();
+            console.log('✅ AuthManager에서 세션 발견:', currentUser.email);
+            updateAuthUI(currentUser);
             return;
         }
         
-        // Supabase 세션 확인
-        const result = await window.authFunctions.getSession();
-        
-        if (result.success && result.session?.user) {
-            console.log('✅ 기존 세션 발견 - 로그인 상태 복원');
-            updateAuthUI(result.session.user);
-        } else {
-            console.log('💡 세션 없음 - 로그아웃 상태 표시');
-            updateAuthUI();
+        // 3. Supabase에서 직접 세션 확인
+        if (window.supabaseClient) {
+            const { data: { session }, error } = await window.supabaseClient.auth.getSession();
+            
+            if (error) {
+                console.log('⚠️ Supabase 세션 확인 오류:', error.message);
+            }
+            
+            if (session && session.user) {
+                console.log('✅ Supabase에서 세션 발견:', session.user.email);
+                // AuthManager 업데이트
+                if (window.authManager) {
+                    window.authManager.updateUser(session.user, session);
+                }
+                updateAuthUI(session.user);
+                return;
+            }
         }
+        
+        // 4. authFunctions로 세션 확인 (fallback)
+        if (window.authFunctions && typeof window.authFunctions.getSession === 'function') {
+            const result = await window.authFunctions.getSession();
+            
+            if (result.success && result.session?.user) {
+                console.log('✅ authFunctions에서 세션 발견:', result.session.user.email);
+                updateAuthUI(result.session.user);
+                return;
+            }
+        }
+        
+        // 5. 모든 방법 실패 - 로그아웃 상태
+        console.log('💡 세션 없음 - 로그아웃 상태 표시');
+        updateAuthUI();
         
     } catch (error) {
         console.log('💡 세션 확인 실패 - 기본 UI 표시:', error.message);

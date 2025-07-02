@@ -1,6 +1,26 @@
 // 강좌 목록 페이지 JavaScript 기능
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('📚 강좌 페이지 로드 시작');
+    
+    // 인증 상태 확인 (페이지 간 로그인 연동)
+    setTimeout(() => {
+        if (typeof window.checkAuthStatus === 'function') {
+            window.checkAuthStatus();
+        } else if (typeof checkAuthStatus === 'function') {
+            checkAuthStatus();
+        } else {
+            console.log('💡 인증 상태 확인 함수 없음 - script.js 로드 확인 필요');
+        }
+    }, 100);
+    
+    // 추가 안전장치: 1초 후 다시 한 번 확인
+    setTimeout(() => {
+        if (typeof window.checkAuthStatus === 'function') {
+            window.checkAuthStatus();
+        }
+    }, 1000);
+    
     // 필터링 기능
     const filterButtons = document.querySelectorAll('.filter-btn');
     const courseItems = document.querySelectorAll('.course-item');

@@ -157,39 +157,11 @@
                         object-fit: cover;
                 }
                 
-                .video-play-overlay {
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        bottom: 0;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        background: rgba(0, 0, 0, 0.3);
-                        cursor: pointer;
-                }
-                
-                .play-button {
-                        width: 80px;
-                        height: 80px;
-                        background: rgba(255, 255, 255, 0.9);
-                        border-radius: 50%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        transition: all 0.3s;
-                }
-                
-                .play-button:hover {
-                        background: white;
-                        transform: scale(1.1);
-                }
-                
-                .play-button i {
-                        font-size: 24px;
-                        color: #333;
-                        margin-left: 4px;
+                .course-thumbnail {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        border-radius: 8px;
                 }
                 
                 /* 강의 제목 영역 */
@@ -537,12 +509,7 @@
                         <!-- 왼쪽: 비디오 및 제목 -->
                         <div class="course-video-section">
                                 <div class="course-video-wrapper">
-                                        <img src="images/pd1.jpg" alt="AI 교육과정 썸네일">
-                                        <div class="video-play-overlay">
-                                                <div class="play-button">
-                                                        <i class="fas fa-play"></i>
-                                                </div>
-                                        </div>
+                                        <img src="images/pd1.jpg" alt="AI 교육과정 썸네일" class="course-thumbnail">
                                 </div>
                                 
                                 <div class="course-title-section">
@@ -748,11 +715,6 @@
         </div>
 
         <script>
-                // 비디오 플레이 버튼 핸들러
-                document.querySelector('.video-play-overlay').addEventListener('click', function() {
-                        alert('비디오 플레이 기능이 여기에 추가됩니다.');
-                });
-                
                 // 구매하기 버튼 핸들러
                 document.querySelector('.purchase-button').addEventListener('click', function() {
                         alert('구매하기 기능이 여기에 추가됩니다.');
