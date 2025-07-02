@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 인증 상태 테스트 - 바로교육</title>
+    
+    <!-- Supabase 라이브러리 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .status-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid #2c5aa0;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .status-logged-out {
+            color: #dc3545;
+        }
+        
+        .status-logged-in {
+            color: #28a745;
+        }
+        
+        .user-info {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            display: none;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #2c5aa0;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1e3d6f;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .test-section {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .test-section h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+        
+        .page-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .page-link {
+            display: block;
+            background: #e9ecef;
+            color: #495057;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .page-link:hover {
+            background: #dee2e6;
+        }
+        
+        .log-area {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 3px 0;
+        }
+        
+        .log-success {
+            color: #28a745;
+        }
+        
+        .log-error {
+            color: #dc3545;
+        }
+        
+        .log-info {
+            color: #17a2b8;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 인증 상태 테스트</h1>
+            <p>로그인 상태 유지 기능을 테스트해보세요</p>
+        </div>
+        
+        <!-- 인증 상태 표시 -->
+        <div class="status-card">
+            <div class="status-indicator" id="statusIndicator">
+                <span id="statusIcon">🔴</span>
+                <span id="statusText">로그아웃 상태</span>
+            </div>
+            <div id="userInfo" class="user-info">
+                <strong>사용자 정보:</strong><br>
+                <span id="userEmail">-</span>
+            </div>
+        </div>
+        
+        <!-- 인증 버튼들 -->
+        <div id="authButtons">
+            <button class="btn btn-primary" onclick="showLoginForm()">
+                🔑 테스트 로그인
+            </button>
+            <button class="btn btn-secondary" onclick="testGoogleLogin()">
+                🌐 Google 로그인 테스트
+            </button>
+        </div>
+        
+        <div id="loggedInButtons" class="hidden">
+            <button class="btn btn-danger" onclick="testLogout()">
+                🚪 로그아웃
+            </button>
+        </div>
+        
+        <!-- 페이지 이동 테스트 -->
+        <div class="test-section">
+            <h3>📄 페이지 이동 테스트</h3>
+            <p>로그인 후 다른 페이지로 이동해서 상태가 유지되는지 확인하세요:</p>
+            <div class="page-links">
+                <a href="index.html" class="page-link">🏠 메인 페이지</a>
+                <a href="courses.html" class="page-link">📚 강좌 목록</a>
+                <a href="course-detail.html" class="page-link">📖 강좌 상세</a>
+            </div>
+        </div>
+        
+        <!-- 로그 영역 -->
+        <div class="log-area" id="logArea">
+            <div class="log-entry log-info">📋 인증 시스템 로그</div>
+        </div>
+    </div>
+
+    <script>
+        // 로그 함수
+        function addLog(message, type = 'info') {
+            const logArea = document.getElementById('logArea');
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${type}`;
+            logEntry.textContent = `${new Date().toLocaleTimeString()} - ${message}`;
+            logArea.appendChild(logEntry);
+            logArea.scrollTop = logArea.scrollHeight;
+        }
+
+        // Supabase 설정
+        const SUPABASE_URL = 'https://nvtxwrpfskqwzzcniahm.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52dHh3cnBmc2txd3p6Y25pYWhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzNDUzOTIsImV4cCI6MjA2NjkyMTM5Mn0.imfzzFkUjaPO8gCpDuPpWQo_wf6IhQjMtHX68sX1Fpk';
+
+        let supabase;
+
+        // Supabase 초기화
+        function initSupabase() {
+            try {
+                const SupabaseLib = window.supabase || window.Supabase;
+                
+                if (typeof SupabaseLib === 'undefined') {
+                    addLog('❌ Supabase 라이브러리 로드 실패', 'error');
+                    return null;
+                }
+                
+                supabase = SupabaseLib.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                addLog('✅ Supabase 클라이언트 초기화 완료', 'success');
+                return supabase;
+                
+            } catch (error) {
+                addLog(`❌ Supabase 초기화 실패: ${error.message}`, 'error');
+                return null;
+            }
+        }
+
+        // UI 업데이트
+        function updateUI(user = null) {
+            const statusIcon = document.getElementById('statusIcon');
+            const statusText = document.getElementById('statusText');
+            const statusIndicator = document.getElementById('statusIndicator');
+            const userInfo = document.getElementById('userInfo');
+            const userEmail = document.getElementById('userEmail');
+            const authButtons = document.getElementById('authButtons');
+            const loggedInButtons = document.getElementById('loggedInButtons');
+
+            if (user) {
+                // 로그인 상태
+                statusIcon.textContent = '🟢';
+                statusText.textContent = '로그인 상태';
+                statusIndicator.className = 'status-indicator status-logged-in';
+                userInfo.style.display = 'block';
+                userEmail.textContent = user.email;
+                authButtons.className = 'hidden';
+                loggedInButtons.className = '';
+                
+                addLog(`✅ 로그인 상태: ${user.email}`, 'success');
+            } else {
+                // 로그아웃 상태
+                statusIcon.textContent = '🔴';
+                statusText.textContent = '로그아웃 상태';
+                statusIndicator.className = 'status-indicator status-logged-out';
+                userInfo.style.display = 'none';
+                authButtons.className = '';
+                loggedInButtons.className = 'hidden';
+                
+                addLog('ℹ️ 로그아웃 상태', 'info');
+            }
+        }
+
+        // 테스트 로그인
+        function showLoginForm() {
+            const email = prompt('테스트용 이메일을 입력하세요:') || 'test@example.com';
+            const password = prompt('비밀번호를 입력하세요:') || 'test123456';
+            
+            testLogin(email, password);
+        }
+
+        async function testLogin(email, password) {
+            if (!supabase) {
+                addLog('❌ Supabase가 초기화되지 않았습니다', 'error');
+                return;
+            }
+
+            try {
+                addLog(`🔄 로그인 시도: ${email}`, 'info');
+                
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+                if (error) {
+                    // 계정이 없으면 자동으로 생성
+                    if (error.message.includes('Invalid login credentials')) {
+                        addLog('📝 계정이 없어서 자동 생성합니다...', 'info');
+                        await testSignup(email, password);
+                        return;
+                    }
+                    throw error;
+                }
+
+                addLog('✅ 로그인 성공!', 'success');
+                updateUI(data.user);
+
+            } catch (error) {
+                addLog(`❌ 로그인 실패: ${error.message}`, 'error');
+            }
+        }
+
+        async function testSignup(email, password) {
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password
+                });
+
+                if (error) throw error;
+
+                addLog('✅ 회원가입 성공! 자동 로그인됩니다.', 'success');
+                updateUI(data.user);
+
+            } catch (error) {
+                addLog(`❌ 회원가입 실패: ${error.message}`, 'error');
+            }
+        }
+
+        // Google 로그인 테스트
+        async function testGoogleLogin() {
+            if (!supabase) {
+                addLog('❌ Supabase가 초기화되지 않았습니다', 'error');
+                return;
+            }
+
+            try {
+                addLog('🔄 Google 로그인 시작...', 'info');
+                
+                const { data, error } = await supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: window.location.href
+                    }
+                });
+
+                if (error) throw error;
+                
+                addLog('✅ Google 로그인 리다이렉트 시작', 'success');
+
+            } catch (error) {
+                addLog(`❌ Google 로그인 실패: ${error.message}`, 'error');
+            }
+        }
+
+        // 로그아웃 테스트
+        async function testLogout() {
+            if (!supabase) {
+                addLog('❌ Supabase가 초기화되지 않았습니다', 'error');
+                return;
+            }
+
+            try {
+                addLog('🔄 로그아웃 시도...', 'info');
+                
+                const { error } = await supabase.auth.signOut();
+                
+                if (error) throw error;
+                
+                addLog('✅ 로그아웃 성공!', 'success');
+                updateUI();
+
+            } catch (error) {
+                addLog(`❌ 로그아웃 실패: ${error.message}`, 'error');
+            }
+        }
+
+        // 세션 복원
+        async function restoreSession() {
+            if (!supabase) return;
+
+            try {
+                addLog('🔄 세션 복원 시도...', 'info');
+                
+                const { data: { session }, error } = await supabase.auth.getSession();
+                
+                if (error) throw error;
+                
+                if (session) {
+                    addLog('✅ 기존 세션 복원 완료', 'success');
+                    updateUI(session.user);
+                } else {
+                    addLog('ℹ️ 복원할 세션이 없습니다', 'info');
+                    updateUI();
+                }
+
+            } catch (error) {
+                addLog(`❌ 세션 복원 실패: ${error.message}`, 'error');
+                updateUI();
+            }
+        }
+
+        // 인증 상태 변경 리스너
+        function setupAuthListener() {
+            if (!supabase) return;
+
+            supabase.auth.onAuthStateChange((event, session) => {
+                addLog(`🔄 인증 상태 변경: ${event}`, 'info');
+                
+                if (session) {
+                    updateUI(session.user);
+                } else {
+                    updateUI();
+                }
+            });
+        }
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', async function() {
+            addLog('🚀 페이지 로드 완료', 'info');
+            
+            // Supabase 라이브러리 로드 대기
+            let attempts = 0;
+            const maxAttempts = 50;
+            
+            const waitForSupabase = () => {
+                return new Promise((resolve) => {
+                    const checkSupabase = () => {
+                        attempts++;
+                        
+                        if (window.supabase || window.Supabase) {
+                            resolve(true);
+                        } else if (attempts >= maxAttempts) {
+                            resolve(false);
+                        } else {
+                            setTimeout(checkSupabase, 100);
+                        }
+                    };
+                    checkSupabase();
+                });
+            };
+            
+            const isSupabaseLoaded = await waitForSupabase();
+            
+            if (isSupabaseLoaded) {
+                const supabaseClient = initSupabase();
+                
+                if (supabaseClient) {
+                    setupAuthListener();
+                    await restoreSession();
+                    addLog('✅ 인증 시스템 초기화 완료', 'success');
+                }
+            } else {
+                addLog('❌ Supabase 라이브러리 로드 실패', 'error');
+            }
+        });
+    </script>
+</body>
+</html>
