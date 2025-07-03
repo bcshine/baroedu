@@ -1,25 +1,46 @@
-// 강좌 목록 페이지 JavaScript 기능
-
+// ===== 강좌 목록 페이지 JavaScript =====
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('📚 강좌 페이지 로드 시작');
-    
-    // 인증 상태 확인 (페이지 간 로그인 연동)
+    // 인증 상태 확인
     setTimeout(() => {
         if (typeof window.checkAuthStatus === 'function') {
             window.checkAuthStatus();
         } else if (typeof checkAuthStatus === 'function') {
             checkAuthStatus();
-        } else {
-            console.log('💡 인증 상태 확인 함수 없음 - script.js 로드 확인 필요');
         }
     }, 100);
     
-    // 추가 안전장치: 1초 후 다시 한 번 확인
-    setTimeout(() => {
-        if (typeof window.checkAuthStatus === 'function') {
-            window.checkAuthStatus();
-        }
-    }, 1000);
+    // ===== 바로교육 로고 클릭 시 홈으로 이동 =====
+    const logo = document.querySelector('.logo');
+    if (logo) {
+        logo.style.cursor = 'pointer';
+        logo.addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+    }
+    
+    // ===== 헤더 로그인/회원가입 버튼 이벤트 =====
+    const loginBtn = document.querySelector('.btn-login');
+    const signupBtn = document.querySelector('.btn-signup');
+    
+    if (loginBtn && !loginBtn.onclick) {
+        loginBtn.addEventListener('click', function() {
+            if (typeof openModal === 'function') {
+                openModal('loginModal');
+            } else if (typeof window.openModal === 'function') {
+                window.openModal('loginModal');
+            }
+        });
+    }
+    
+    if (signupBtn && !signupBtn.onclick) {
+        signupBtn.addEventListener('click', function() {
+            if (typeof openModal === 'function') {
+                openModal('signupModal');
+            } else if (typeof window.openModal === 'function') {
+                window.openModal('signupModal');
+            }
+        });
+    }
     
     // 필터링 기능
     const filterButtons = document.querySelectorAll('.filter-btn');
@@ -48,11 +69,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // 카운트 업데이트
         updateCourseCount();
     }
     
-    // 카테고리 필터링
+    // 필터 버튼 이벤트
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {
             // 활성 버튼 변경
@@ -61,23 +81,15 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const category = this.getAttribute('data-category');
             
+            // 강좌 필터링
             courseItems.forEach(item => {
                 if (category === 'all' || item.getAttribute('data-category') === category) {
                     item.style.display = 'block';
-                    // 애니메이션 효과
-                    item.style.opacity = '0';
-                    item.style.transform = 'translateY(20px)';
-                    setTimeout(() => {
-                        item.style.transition = 'all 0.3s ease';
-                        item.style.opacity = '1';
-                        item.style.transform = 'translateY(0)';
-                    }, 100);
                 } else {
                     item.style.display = 'none';
                 }
             });
             
-            // 필터링 후 카운트 업데이트
             updateCourseCount();
         });
     });
@@ -86,39 +98,19 @@ document.addEventListener('DOMContentLoaded', function() {
     if (sortSelect) {
         sortSelect.addEventListener('change', function() {
             const sortType = this.value;
-            const coursesGrid = document.getElementById('courses-grid');
+            const coursesGrid = document.querySelector('.courses-grid');
             const courseItemsArray = Array.from(courseItems);
             
             courseItemsArray.sort((a, b) => {
                 switch (sortType) {
-                    case 'latest':
-                        // 최신순 (데이터 속성으로 구현 가능)
-                        return Math.random() - 0.5; // 임시로 랜덤 정렬
-                    
-                    case 'popular':
-                        // 인기순 (수강생 수 기준)
-                        const studentsA = parseInt(a.querySelector('.students-count').textContent.replace(/[^0-9]/g, ''));
-                        const studentsB = parseInt(b.querySelector('.students-count').textContent.replace(/[^0-9]/g, ''));
-                        return studentsB - studentsA;
-                    
                     case 'price-low':
-                        // 가격 낮은순
-                        const priceA = getPriceFromElement(a);
-                        const priceB = getPriceFromElement(b);
-                        return priceA - priceB;
-                    
+                        return getPriceFromElement(a) - getPriceFromElement(b);
                     case 'price-high':
-                        // 가격 높은순
-                        const priceA2 = getPriceFromElement(a);
-                        const priceB2 = getPriceFromElement(b);
-                        return priceB2 - priceA2;
-                    
+                        return getPriceFromElement(b) - getPriceFromElement(a);
                     case 'rating':
-                        // 평점순
-                        const ratingA = parseFloat(a.querySelector('.rating-score').textContent);
-                        const ratingB = parseFloat(b.querySelector('.rating-score').textContent);
-                        return ratingB - ratingA;
-                    
+                        return getDateFromElement(b) - getDateFromElement(a);
+                    case 'popular':
+                        return getDateFromElement(b) - getDateFromElement(a);
                     default:
                         return 0;
                 }
@@ -140,6 +132,11 @@ document.addEventListener('DOMContentLoaded', function() {
         return 0;
     }
     
+    // 날짜 추출 함수 (기본값)
+    function getDateFromElement(element) {
+        return Date.now();
+    }
+    
     // 강좌 수 업데이트
     function updateCourseCount() {
         const visibleCourses = document.querySelectorAll('.course-item[style*="display: block"], .course-item:not([style*="display: none"])');
@@ -155,19 +152,42 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextBtn = document.querySelector('.pagination-btn.next');
     
     let currentPage = 1;
-    const itemsPerPage = 10; // 페이지당 강좌 수
+    const itemsPerPage = 10;
+    
+    if (paginationNumbers.length > 0) {
+        paginationNumbers.forEach(btn => {
+            btn.addEventListener('click', function() {
+                currentPage = parseInt(this.textContent);
+                updatePagination();
+            });
+        });
+        
+        if (prevBtn) {
+            prevBtn.addEventListener('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    updatePagination();
+                }
+            });
+        }
+        
+        if (nextBtn) {
+            nextBtn.addEventListener('click', function() {
+                const totalPages = Math.ceil(courseItems.length / itemsPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    updatePagination();
+                }
+            });
+        }
+    }
     
     function updatePagination() {
-        const visibleCourses = Array.from(courseItems).filter(item => 
-            item.style.display !== 'none'
-        );
-        
-        const totalPages = Math.ceil(visibleCourses.length / itemsPerPage);
+        // 현재 페이지에 해당하는 강좌만 표시
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
         
-        // 강좌 표시/숨김
-        visibleCourses.forEach((item, index) => {
+        courseItems.forEach((item, index) => {
             if (index >= startIndex && index < endIndex) {
                 item.style.display = 'block';
             } else {
@@ -182,112 +202,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 btn.classList.add('active');
             }
         });
-        
-        // 이전/다음 버튼 상태 업데이트
-        if (prevBtn) {
-            prevBtn.disabled = currentPage === 1;
-        }
-        if (nextBtn) {
-            nextBtn.disabled = currentPage === totalPages;
-        }
-    }
-    
-    // 페이지네이션 이벤트 리스너
-    paginationNumbers.forEach(btn => {
-        btn.addEventListener('click', function() {
-            currentPage = parseInt(this.textContent);
-            updatePagination();
-            // 페이지 상단으로 스크롤
-            window.scrollTo({
-                top: document.querySelector('.courses-list').offsetTop - 100,
-                behavior: 'smooth'
-            });
-        });
-    });
-    
-    if (prevBtn) {
-        prevBtn.addEventListener('click', function() {
-            if (currentPage > 1) {
-                currentPage--;
-                updatePagination();
-            }
-        });
-    }
-    
-    if (nextBtn) {
-        nextBtn.addEventListener('click', function() {
-            currentPage++;
-            updatePagination();
-        });
-    }
-    
-    // 초기 페이지네이션 설정
-    updatePagination();
-    
-    // 검색 기능 (검색창이 있다면)
-    const searchInput = document.querySelector('.search-input');
-    if (searchInput) {
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            
-            courseItems.forEach(item => {
-                const title = item.querySelector('.course-title a').textContent.toLowerCase();
-                const subtitle = item.querySelector('.course-subtitle').textContent.toLowerCase();
-                const category = item.querySelector('.course-category').textContent.toLowerCase();
-                
-                if (title.includes(searchTerm) || 
-                    subtitle.includes(searchTerm) || 
-                    category.includes(searchTerm)) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-            
-            updateCourseCount();
-            currentPage = 1; // 검색 시 첫 페이지로
-            updatePagination();
-        });
     }
     
     // 위시리스트 기능
     const wishlistButtons = document.querySelectorAll('.btn-wishlist');
-    wishlistButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const courseId = this.closest('.course-item').getAttribute('data-course-id');
+    
+    wishlistButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const courseItem = this.closest('.course-item');
+            const courseId = courseItem.getAttribute('data-course-id');
+            const courseTitle = courseItem.querySelector('.course-title').textContent;
             
-            // 위시리스트 추가/제거 로직
-            if (this.classList.contains('added')) {
+            let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+            
+            if (wishlist.includes(courseId)) {
+                // 위시리스트에서 제거
+                wishlist = wishlist.filter(id => id !== courseId);
                 this.classList.remove('added');
                 this.innerHTML = '<i class="far fa-heart"></i> 위시리스트';
-                removeFromWishlist(courseId);
+                showNotification('위시리스트에서 제거되었습니다.');
             } else {
+                // 위시리스트에 추가
+                wishlist.push(courseId);
                 this.classList.add('added');
                 this.innerHTML = '<i class="fas fa-heart"></i> 위시리스트 완료';
-                addToWishlist(courseId);
+                showNotification(`"${courseTitle}"이 위시리스트에 추가되었습니다.`);
             }
+            
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
         });
     });
-    
-    // 로컬 스토리지 위시리스트 관리
-    function addToWishlist(courseId) {
-        let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-        if (!wishlist.includes(courseId)) {
-            wishlist.push(courseId);
-            localStorage.setItem('wishlist', JSON.stringify(wishlist));
-        }
-        
-        // 알림 표시
-        showNotification('위시리스트에 추가되었습니다!');
-    }
-    
-    function removeFromWishlist(courseId) {
-        let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-        wishlist = wishlist.filter(id => id !== courseId);
-        localStorage.setItem('wishlist', JSON.stringify(wishlist));
-        
-        showNotification('위시리스트에서 제거되었습니다.');
-    }
     
     // 알림 표시 함수
     function showNotification(message) {
@@ -346,39 +290,4 @@ document.addEventListener('DOMContentLoaded', function() {
     // 초기화
     restoreWishlistStatus();
     updateCourseCount();
-    
-    // 스크롤 시 헤더 효과 (기존 script.js와 동일)
-    const header = document.querySelector('.header');
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 100) {
-            header.style.background = 'rgba(255, 255, 255, 0.95)';
-            header.style.backdropFilter = 'blur(10px)';
-        } else {
-            header.style.background = '#fff';
-            header.style.backdropFilter = 'none';
-        }
-    });
-    
-    // 강좌 카드 애니메이션
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-    
-    // 초기 애니메이션 설정
-    courseItems.forEach(item => {
-        item.style.opacity = '0';
-        item.style.transform = 'translateY(30px)';
-        item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(item);
-    });
 }); 
