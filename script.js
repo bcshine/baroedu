@@ -194,41 +194,31 @@ function updateAuthUI(user = null) {
 // ===== 로그아웃 =====
 async function handleLogout() {
     try {
+        // Supabase 로그아웃 시도
         if (window.authFunctions) {
-            const result = await window.authFunctions.signOut();
-            if (result.success) {
-                // 인증 상태 초기화
-                if (window.authManager) {
-                    window.authManager.updateUser(null, null);
-                }
-                
-                // 로컬 스토리지에서 세션 관련 데이터 삭제
-                localStorage.removeItem('sb-access-token');
-                localStorage.removeItem('sb-refresh-token');
-                localStorage.removeItem('supabase.auth.token');
-                
-                // 쿠키 삭제 (httpOnly가 아닌 경우)
-                document.cookie = 'sb-access-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-                document.cookie = 'sb-refresh-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-                
-                // UI 업데이트
-                updateAuthUI(null);
-                
-                alert('로그아웃되었습니다.');
-            } else {
-                // 실패해도 UI는 로그아웃 상태로 변경
-                updateAuthUI(null);
-                console.error('로그아웃 실패:', result.error);
-                alert('로그아웃되었습니다.');
-            }
-        } else {
-            // 데모 모드
-            updateAuthUI(null);
-            alert('로그아웃되었습니다.');
+            await window.authFunctions.signOut();
         }
+        
+        // 인증 상태 초기화
+        if (window.authManager) {
+            window.authManager.updateUser(null, null);
+        }
+        
+        // 로컬 스토리지 및 쿠키 정리
+        localStorage.clear();
+        sessionStorage.clear();
+        document.cookie.split(";").forEach(function(c) { 
+            document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+        });
+        
+        // UI 업데이트
+        updateAuthUI(null);
+        
+        alert('로그아웃되었습니다.');
+        
     } catch (error) {
-        // 오류가 발생해도 UI는 로그아웃 상태로 변경
         console.error('로그아웃 오류:', error);
+        // 오류가 발생해도 UI는 로그아웃 상태로 변경
         updateAuthUI(null);
         alert('로그아웃되었습니다.');
     }
@@ -450,94 +440,7 @@ async function signupWithGoogle() {
     await loginWithGoogle();
 }
 
-// ===== Supabase 상태 확인 (디버깅용) =====
-async function checkSupabaseStatus() {
-    console.log('🔍 Supabase 상태 진단 시작...');
-    
-    let statusReport = '📊 Supabase 연결 상태 진단\n\n';
-    
-    try {
-        // 1. 라이브러리 로드 확인
-        if (window.supabase || window.Supabase) {
-            statusReport += '✅ Supabase 라이브러리: 정상 로드\n';
-        } else {
-            statusReport += '❌ Supabase 라이브러리: 로드 실패\n';
-        }
-        
-        // 2. 클라이언트 초기화 확인
-        if (window.supabaseClient) {
-            statusReport += '✅ Supabase 클라이언트: 초기화됨\n';
-        } else {
-            statusReport += '❌ Supabase 클라이언트: 초기화 안됨\n';
-        }
-        
-        // 3. 인증 함수 확인
-        if (window.authFunctions) {
-            statusReport += '✅ 인증 함수: 사용 가능\n';
-        } else {
-            statusReport += '❌ 인증 함수: 사용 불가\n';
-        }
-        
-        // 4. 프로젝트 연결 테스트
-        if (window.supabaseClient) {
-            try {
-                const { data, error } = await window.supabaseClient.auth.getSession();
-                
-                if (error) {
-                    statusReport += `❌ 프로젝트 연결: 오류 발생\n   ${error.message}\n`;
-                    
-                    if (error.message.includes('Invalid API key') || 
-                        error.message.includes('Project not found') ||
-                        error.message.includes('Usage limit exceeded')) {
-                        statusReport += '⚠️  사용량 한계에 도달했을 가능성 있음\n';
-                    }
-                } else {
-                    statusReport += '✅ 프로젝트 연결: 정상\n';
-                    
-                    if (data.session) {
-                        statusReport += `✅ 현재 세션: ${data.session.user.email}\n`;
-                    } else {
-                        statusReport += '🔓 현재 세션: 로그아웃 상태\n';
-                    }
-                }
-            } catch (projectError) {
-                statusReport += `❌ 프로젝트 연결: 네트워크 오류\n   ${projectError.message}\n`;
-            }
-        }
-        
-        // 5. Google OAuth 설정 확인
-        if (window.supabaseClient) {
-            try {
-                // Google OAuth 테스트 (실제 리다이렉트 없이)
-                statusReport += '🔍 Google OAuth 설정 확인 중...\n';
-                
-                // 로컬 스토리지에서 이전 OAuth 흔적 확인
-                const hasOAuthTokens = localStorage.getItem('sb-access-token') || 
-                                     sessionStorage.getItem('supabase.auth.token');
-                
-                if (hasOAuthTokens) {
-                    statusReport += '📱 이전 OAuth 토큰 발견 (캐시 문제 가능성)\n';
-                } else {
-                    statusReport += '🆕 깨끗한 OAuth 상태\n';
-                }
-                
-            } catch (oauthError) {
-                statusReport += `❌ OAuth 설정: 오류\n   ${oauthError.message}\n`;
-            }
-        }
-        
-        statusReport += '\n💡 권장 사항:\n';
-        statusReport += '1. "연결 상태 확인" 후 Google 로그인 시도\n';
-        statusReport += '2. 로그아웃 → 재로그인으로 캐시 정리\n';
-        statusReport += '3. 브라우저 개발자도구 → Console 탭에서 오류 확인\n';
-        
-    } catch (generalError) {
-        statusReport += `❌ 진단 중 오류: ${generalError.message}\n`;
-    }
-    
-    console.log(statusReport);
-    alert(statusReport);
-}
+
 
 // ===== 버튼 이벤트 리스너 설정 =====
 document.addEventListener('DOMContentLoaded', function() {
@@ -645,5 +548,4 @@ document.addEventListener('DOMContentLoaded', function() {
     window.handleLogout = handleLogout;
     window.loginWithGoogle = loginWithGoogle;
     window.signupWithGoogle = signupWithGoogle;
-    window.checkSupabaseStatus = checkSupabaseStatus;
 }); 
