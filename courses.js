@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ===== 헤더 로그인/회원가입 버튼 이벤트 =====
     const loginBtn = document.querySelector('.btn-login');
     const signupBtn = document.querySelector('.btn-signup');
+    const logoutBtn = document.querySelector('.btn-logout');
     
     if (loginBtn && !loginBtn.onclick) {
         loginBtn.addEventListener('click', function() {
@@ -38,6 +39,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 openModal('signupModal');
             } else if (typeof window.openModal === 'function') {
                 window.openModal('signupModal');
+            }
+        });
+    }
+    
+    if (logoutBtn && !logoutBtn.onclick) {
+        logoutBtn.addEventListener('click', function() {
+            if (typeof handleLogout === 'function') {
+                handleLogout();
+            } else if (typeof window.handleLogout === 'function') {
+                window.handleLogout();
             }
         });
     }
