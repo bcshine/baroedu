@@ -1,9 +1,9 @@
 // Supabase 클라이언트 설정
 // 실제 프로젝트에서는 환경변수로 관리해야 합니다
 
-// ✅ 바로교육 실제 Supabase 프로젝트 설정
-const SUPABASE_URL = 'https://nvtxwrpfskqwzzcniahm.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52dHh3cnBmc2txd3p6Y25pYWhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzNDUzOTIsImV4cCI6MjA2NjkyMTM5Mn0.imfzzFkUjaPO8gCpDuPpWQo_wf6IhQjMtHX68sX1Fpk';
+// ✅ 바로교육 새로운 Supabase 프로젝트 설정
+const SUPABASE_URL = 'https://bjsstktiiniigdnsdwsr.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqc3N0a3RpaW5paWdkbnNkd3NyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1MDI4MTEsImV4cCI6MjA2NzA3ODgxMX0.h3W1Q3L_yX8_HPOMmEluq2Qum_INJSCv9OKV4IZdYRs';
 
 // Supabase CDN에서 라이브러리 로드
 // HTML head에 다음 스크립트 태그를 추가해야 합니다:
@@ -151,10 +151,10 @@ const authFunctions = {
             const { data, error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: window.location.origin,
+                    redirectTo: window.location.href, // 현재 페이지로 리다이렉트
                     queryParams: {
                         access_type: 'offline',
-                        prompt: 'consent',
+                        prompt: 'select_account', // 계정 선택 화면 표시
                     }
                 }
             });
@@ -176,6 +176,8 @@ const authFunctions = {
                 errorMessage = '네트워크 연결을 확인해주세요.';
             } else if (error.message.includes('OAuth')) {
                 errorMessage = 'Google 로그인 설정에 문제가 있습니다. 관리자에게 문의하세요.';
+            } else if (error.message.includes('popup')) {
+                errorMessage = '팝업이 차단되었습니다. 팝업 허용 후 다시 시도해주세요.';
             }
             
             return { success: false, error: errorMessage };
@@ -262,15 +264,64 @@ function setupAuthListener() {
     supabase.auth.onAuthStateChange((event, session) => {
         console.log('🔄 Supabase 인증 상태 변경:', event, session?.user?.email || '로그아웃');
         
-        if (session) {
+        // 로그인 성공 처리
+        if (event === 'SIGNED_IN' && session) {
+            console.log('✅ 로그인 성공:', {
+                email: session.user.email,
+                name: session.user.user_metadata?.name || session.user.user_metadata?.full_name,
+                provider: session.user.app_metadata?.provider,
+                event: event
+            });
+            
             authManager.updateUser(session.user, session);
-            // script.js의 updateAuthUI 함수 호출
+            
+            // UI 업데이트
+            if (typeof window.updateAuthUI === 'function') {
+                window.updateAuthUI(session.user);
+                console.log('✅ UI 업데이트 완료');
+            } else {
+                console.warn('⚠️ updateAuthUI 함수를 찾을 수 없습니다');
+            }
+            
+            // 로그인 모달 닫기
+            if (typeof window.closeModal === 'function') {
+                window.closeModal('loginModal');
+                window.closeModal('signupModal');
+                console.log('✅ 모달 닫기 완료');
+            } else {
+                console.warn('⚠️ closeModal 함수를 찾을 수 없습니다');
+            }
+            
+            // Google OAuth 콜백인지 확인 (URL에 OAuth 파라미터가 있는 경우에만 알림 표시)
+            const url = new URL(window.location);
+            const isOAuthCallback = url.searchParams.has('access_token') || url.searchParams.has('refresh_token') || url.hash.includes('access_token');
+            
+            if (isOAuthCallback && session.user.app_metadata?.provider === 'google') {
+                // Google OAuth 성공 메시지 표시 (한 번만)
+                setTimeout(() => {
+                    const userName = session.user.user_metadata?.name || session.user.user_metadata?.full_name || session.user.email.split('@')[0];
+                    alert(`🎉 Google 로그인 성공!\n\n${userName}님, 바로교육에 오신 것을 환영합니다!`);
+                }, 500);
+            }
+            
+        } else if (event === 'SIGNED_OUT') {
+            console.log('✅ 로그아웃 완료');
+            authManager.updateUser(null, null);
+            
+            // UI 업데이트
+            if (typeof window.updateAuthUI === 'function') {
+                window.updateAuthUI(null);
+            }
+            
+        } else if (session) {
+            // 일반적인 세션 업데이트
+            authManager.updateUser(session.user, session);
             if (typeof window.updateAuthUI === 'function') {
                 window.updateAuthUI(session.user);
             }
         } else {
+            // 세션 없음
             authManager.updateUser(null, null);
-            // script.js의 updateAuthUI 함수 호출
             if (typeof window.updateAuthUI === 'function') {
                 window.updateAuthUI(null);
             }
@@ -380,12 +431,36 @@ document.addEventListener('DOMContentLoaded', async function() {
             // 인증 리스너 설정
             setupAuthListener();
             
-            // 세션 복원
+            // 세션 복원 및 OAuth 콜백 처리
             try {
                 const { data: { session }, error } = await supabaseClient.auth.getSession();
                 if (session && session.user) {
                     console.log('✅ 초기 세션 복원 성공:', session.user.email);
                     authManager.updateUser(session.user, session);
+                    
+                    // URL에 OAuth 관련 파라미터가 있으면 정리
+                    const url = new URL(window.location);
+                    const hasOAuthParams = url.searchParams.has('access_token') || url.searchParams.has('refresh_token') || url.hash.includes('access_token');
+                    
+                    if (hasOAuthParams) {
+                        console.log('🔄 OAuth 콜백 URL 정리 중...');
+                        // URL 파라미터 정리
+                        url.searchParams.delete('access_token');
+                        url.searchParams.delete('refresh_token');
+                        url.searchParams.delete('expires_in');
+                        url.searchParams.delete('expires_at');
+                        url.searchParams.delete('token_type');
+                        url.searchParams.delete('type');
+                        
+                        // 해시 파라미터도 정리
+                        if (url.hash.includes('access_token')) {
+                            url.hash = '';
+                        }
+                        
+                        // URL 업데이트 (페이지 새로고침 없이)
+                        window.history.replaceState({}, document.title, url.toString());
+                        console.log('✅ OAuth 콜백 URL 정리 완료');
+                    }
                 } else if (error) {
                     console.log('💡 세션 복원 오류:', error.message);
                 }
@@ -405,4 +480,52 @@ document.addEventListener('DOMContentLoaded', async function() {
     window.authFunctions = authFunctions;
     window.authManager = authManager;
     window.supabaseClient = supabase;
+    
+    // 디버그 함수 추가
+    window.debugAuth = {
+        checkSession: async () => {
+            if (!supabase) {
+                console.log('❌ Supabase 클라이언트가 초기화되지 않음');
+                return;
+            }
+            
+            try {
+                const { data: { session }, error } = await supabase.auth.getSession();
+                console.log('🔍 현재 세션 상태:', {
+                    hasSession: !!session,
+                    user: session?.user ? {
+                        email: session.user.email,
+                        name: session.user.user_metadata?.name || session.user.user_metadata?.full_name,
+                        provider: session.user.app_metadata?.provider
+                    } : null,
+                    error: error?.message
+                });
+                return session;
+            } catch (e) {
+                console.log('❌ 세션 확인 실패:', e.message);
+            }
+        },
+        
+        forceUIUpdate: () => {
+            const user = authManager.getCurrentUser();
+            console.log('🔄 강제 UI 업데이트:', user?.email || '로그아웃 상태');
+            if (typeof window.updateAuthUI === 'function') {
+                window.updateAuthUI(user);
+            }
+        },
+        
+        getAuthState: () => {
+            console.log('🔍 인증 상태 정보:', {
+                authManager: {
+                    isAuthenticated: authManager.isAuthenticated(),
+                    currentUser: authManager.getCurrentUser()?.email || null
+                },
+                supabaseClient: !!supabase,
+                functions: {
+                    updateAuthUI: typeof window.updateAuthUI,
+                    closeModal: typeof window.closeModal
+                }
+            });
+        }
+    };
 }); 

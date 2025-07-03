@@ -896,7 +896,7 @@ async function loginWithGoogle() {
         }
         
         // Supabase 프로젝트가 설정되었는지 확인
-        if (!window.supabase) {
+        if (!window.supabaseClient) {
             console.error('Supabase 클라이언트가 초기화되지 않음');
             alert('⚠️ Supabase 프로젝트 설정이 필요합니다.\n\n1. https://supabase.com에서 프로젝트 생성\n2. js/supabase-client.js 파일에서 URL과 Key 설정\n3. Authentication > Providers에서 Google OAuth 활성화');
             return;
@@ -904,21 +904,43 @@ async function loginWithGoogle() {
         
         console.log('Google OAuth 시작...');
         
-        // Google 로그인 시작 (새 창에서 OAuth 진행)
+        // 로딩 상태 표시 (버튼이 있다면)
+        const googleBtn = document.querySelector('.btn-social.google');
+        if (googleBtn) {
+            const originalText = googleBtn.innerHTML;
+            googleBtn.innerHTML = '<i class="fab fa-google"></i> 로그인 중...';
+            googleBtn.disabled = true;
+            
+            // 3초 후 원래 상태로 복원 (OAuth 리다이렉트가 실패한 경우 대비)
+            setTimeout(() => {
+                googleBtn.innerHTML = originalText;
+                googleBtn.disabled = false;
+            }, 3000);
+        }
+        
+        // Google 로그인 시작 (현재 창에서 OAuth 진행)
         const result = await window.authFunctions.signInWithGoogle();
         
         if (result.success) {
-            console.log('Google OAuth 리다이렉트 시작됨');
-            // OAuth 프로세스가 진행되므로 모달은 열어둡니다
-            // 성공 시 자동으로 인증 상태가 변경됩니다
+            console.log('✅ Google OAuth 리다이렉트 시작됨');
+            // OAuth 프로세스가 진행되므로 추가 처리 없음
+            // 리다이렉트 후 onAuthStateChange에서 처리됨
         } else {
-            console.error('Google 로그인 실패:', result.error);
+            console.error('❌ Google 로그인 실패:', result.error);
+            
+            // 버튼 상태 복원
+            if (googleBtn) {
+                googleBtn.innerHTML = '<i class="fab fa-google"></i> Google로 로그인';
+                googleBtn.disabled = false;
+            }
             
             let errorMessage = result.error;
             if (errorMessage.includes('OAuth provider not enabled')) {
                 errorMessage = 'Google 로그인이 활성화되지 않았습니다.\n\nSupabase Dashboard > Authentication > Providers에서 Google을 활성화해주세요.';
             } else if (errorMessage.includes('Invalid OAuth configuration')) {
                 errorMessage = 'Google OAuth 설정이 올바르지 않습니다.\n\nSupabase Dashboard에서 Google OAuth 설정을 확인해주세요.';
+            } else if (errorMessage.includes('팝업')) {
+                errorMessage = '팝업이 차단되었습니다.\n\n브라우저 설정에서 팝업을 허용하고 다시 시도해주세요.';
             }
             
             alert('❌ Google 로그인 오류:\n' + errorMessage);
@@ -926,6 +948,13 @@ async function loginWithGoogle() {
         
     } catch (error) {
         console.error('Google 로그인 예외:', error);
+        
+        // 버튼 상태 복원
+        const googleBtn = document.querySelector('.btn-social.google');
+        if (googleBtn) {
+            googleBtn.innerHTML = '<i class="fab fa-google"></i> Google로 로그인';
+            googleBtn.disabled = false;
+        }
         
         let errorMessage = '알 수 없는 오류가 발생했습니다.';
         if (error.message.includes('Supabase가 초기화되지 않았습니다')) {
