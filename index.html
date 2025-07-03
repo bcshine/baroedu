@@ -412,8 +412,6 @@
         </div>
     </section>
 
-
-
     <!-- 사용자 후기 -->
     <section id="reviews" class="reviews">
         <div class="container">
@@ -650,5 +648,13 @@
     <script src="js/supabase-client.js"></script>
     <!-- 메인 스크립트 -->
     <script src="script.js"></script>
+    <script>
+    console.log('Supabase client:', window.supabaseClient)
+    if (window.supabaseClient) {
+        window.supabaseClient.auth.getSession().then(result => {
+            console.log('Current session:', result)
+        })
+    }
+    </script>
 </body>
 </html> 

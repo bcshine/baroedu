@@ -560,6 +560,54 @@ function setupSupabaseAuthListener() {
 async function checkAuthStatus() {
     console.log('🔍 인증 상태 확인 시작...');
     
+    // URL에서 OAuth 콜백 처리 (Google 로그인 후)
+    const urlParams = new URLSearchParams(window.location.hash.substring(1));
+    const accessToken = urlParams.get('access_token');
+    const refreshToken = urlParams.get('refresh_token');
+    
+    if (accessToken) {
+        console.log('✅ Google OAuth 콜백 감지 - 토큰 처리 중...');
+        
+        try {
+            // Supabase에서 세션 설정
+            if (window.supabaseClient) {
+                const { data, error } = await window.supabaseClient.auth.setSession({
+                    access_token: accessToken,
+                    refresh_token: refreshToken
+                });
+                
+                if (error) {
+                    console.error('❌ 세션 설정 오류:', error);
+                } else if (data.user) {
+                    console.log('✅ Google 로그인 성공:', data.user.email);
+                    
+                    // AuthManager 업데이트
+                    if (window.authManager) {
+                        window.authManager.updateUser(data.user, data.session);
+                    }
+                    
+                    // UI 업데이트
+                    updateAuthUI(data.user);
+                    
+                    // URL에서 토큰 제거 (보안을 위해)
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    
+                    // 성공 메시지
+                    setTimeout(() => {
+                        alert('🎉 Google 로그인 성공!\n\n바로교육에 오신 것을 환영합니다!');
+                    }, 500);
+                    
+                    return;
+                }
+            }
+        } catch (error) {
+            console.error('❌ OAuth 콜백 처리 오류:', error);
+        }
+        
+        // URL에서 토큰 제거 (오류 발생 시에도)
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    
     try {
         // 1. Supabase 클라이언트 확인
         if (!window.supabaseClient) {

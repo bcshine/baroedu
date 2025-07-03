@@ -3,7 +3,7 @@
 
 // ✅ 바로교육 새로운 Supabase 프로젝트 설정
 const SUPABASE_URL = 'https://bjsstktiiniigdnsdwsr.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqc3N0a3RpaW5paWdkbnNkd3NyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1MDI4MTEsImV4cCI6MjA2NzA3ODgxMX0.h3W1Q3L_yX8_HPOMmEluq2Qum_INJSCv9OKV4IZdYRs';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqc3N0a3RpaW5paWdkbnNkd3NyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU4ODYwMjYsImV4cCI6MjA1MTQ2MjAyNn0.vFOBvgXKgJhvKFJJKL8D5_FRVrGXKSGRGjFc1OTDwP8';
 
 // Supabase CDN에서 라이브러리 로드
 // HTML head에 다음 스크립트 태그를 추가해야 합니다:
