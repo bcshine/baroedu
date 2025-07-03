@@ -1260,13 +1260,38 @@ body {
 }
 
 .btn-social.google {
-    color: #4285f4;
+    background: #ffffff;
+    color: #3c4043;
+    border: 1px solid #dadce0;
+    font-family: 'Google Sans', Roboto, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.25px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 0 24px;
+    height: 40px;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.30), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    transition: all 0.2s ease;
 }
 
 .btn-social.google:hover {
-    border-color: #4285f4;
-    background: rgba(66, 133, 244, 0.04);
+    background: #f8f9fa;
+    border-color: #dadce0;
+    box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.30), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+    transform: none;
 }
+
+.btn-social.google:active {
+    background: #f1f3f4;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.30), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+}
+
+
 
 /* 인증 전환 */
 .auth-switch {
